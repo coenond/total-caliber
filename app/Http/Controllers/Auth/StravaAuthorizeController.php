@@ -3,12 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 class StravaAuthorizeController extends Controller
 {
@@ -18,6 +13,11 @@ class StravaAuthorizeController extends Controller
       \Log::info($user);
       \Log::info($request->all());
 
+      // array (
+      //   'state' => NULL,
+      //   'code' => '656c164a168133bb414deded4ab821c18b24f1a6',
+      //   'scope' => 'read,activity:write,activity:read_all',
+      // )  
     }
 
 }
