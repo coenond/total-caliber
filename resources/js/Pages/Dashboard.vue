@@ -26,5 +26,12 @@ import { Head } from '@inertiajs/inertia-vue3';
                 </div>
             </div>
         </div>
+        <div v-if="$page.props.success_message">
+            <div class="max-w-xs bg-green-500 text-sm text-white rounded-md shadow-lg mb-3 ml-3" role="alert">
+                <div class="flex p-4">
+                    {{ $page.props.success_message }}
+                </div>
+            </div>
+        </div>
     </AuthenticatedLayout>
 </template>
