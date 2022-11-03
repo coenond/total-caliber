@@ -22,7 +22,7 @@ class StravaAuthService
             'client_id' => env('STRAVA_CLIEND_ID'),
             'response_type' => 'code',
             'approval_prompt' => 'force',
-            'scope' => 'activity:read,activity:write',
+            'scope' => 'activity:read,activity:write,activity:read_all',
             'redirect_uri' => url('/strava/authorize')
         ]);
     }
@@ -56,6 +56,10 @@ class StravaAuthService
                 [ 'token' => $result->object()->access_token, 'expires_at' => $result->object()->expires_at ]
             );
         }
-        
+    }
+
+    public function userHasStravaAuth(User $user): bool
+    {
+        return  StravaRefreshToken::whereUserId($user->id)->exists();
     }
 }
