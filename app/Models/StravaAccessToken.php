@@ -10,4 +10,6 @@ class StravaAccessToken extends Model
     use HasFactory;
  
     public $timestamps = false;
+
+    protected $fillable = ['user_id', 'token', 'expires_at'];
 }
