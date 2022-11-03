@@ -18,10 +18,14 @@ import { Head } from '@inertiajs/inertia-vue3';
                 <div class="overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         You're logged in change!!
-                        {{ $page.props.stravaAuthUrl }}
                     </div>
-                    <div class="p-6 mt-6 bg-white border-b border-gray-200">
-                        <a :href=$page.props.stravaAuthUrl class="underline">Connect TotalCaliber to your strava</a>
+                    <div v-if="$page.props.stravaAuthUrl" class="p-6 mt-6 bg-white border-b border-gray-200">
+                        <a :href=$page.props.stravaAuthUrl>
+                            <button class="group relative h-12 w-48 overflow-hidden rounded-lg bg-white text-lg shadow">
+                                <div class="absolute inset-0 w-3 bg-orange-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                                <span class="relative text-black group-hover:text-white">Connect to Strava</span>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
