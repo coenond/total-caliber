@@ -17,8 +17,11 @@ class DashboardController extends Controller
 
     public function renderDashboardPage(Request $req): Response
     {
+        $userHasStravaAuth = $this->stravaAuthService->userHasStravaAuth($req->user());
+
         return Inertia::render('Dashboard', [
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
+            'userHasStravaAuth' => $userHasStravaAuth,
             'success_message' => $req->has('success_message') ? $req->input('success_message') : null
         ]);
     }
