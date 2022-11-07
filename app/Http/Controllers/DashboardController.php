@@ -22,7 +22,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
             'userHasStravaAuth' => $userHasStravaAuth,
-            'success_message' => $req->has('success_message') ? $req->input('success_message') : null
+            'success_message' => session()->get('success_message')
         ]);
     }
 }

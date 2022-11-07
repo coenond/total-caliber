@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\StravaAuthToken;
 use App\Services\StravaAuthService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Support\Facades\Redirect;
 
 class StravaAuthorizeController extends Controller
 {
@@ -15,7 +15,7 @@ class StravaAuthorizeController extends Controller
         private StravaAuthService $stravaAuthService
     ) { }
 
-    public function authorized(Request $req): Response
+    public function authorized(Request $req): RedirectResponse
     {
         $user = $req->user();
         /** @var StravaAuthToken */
@@ -23,8 +23,8 @@ class StravaAuthorizeController extends Controller
             $user, $req->get('code'), $req->get('scope')
         );
 
-        $this->stravaAuthService->setUserInitialRefreshToken($stravaAuthToken);
+        $this->stravaAuthService->setUserInitialData($stravaAuthToken);
  
-        return Inertia::render('Dashboard', ['success_message' => 'Strava succesfully authenticated']);
+        return Redirect::route('dashboard')->with(['success_message' => 'Strava succesfully authenticated']);
     }
 }
