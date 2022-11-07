@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\StravaAccessToken;
 use App\Models\StravaAuthToken;
+use App\Models\StravaProfile;
 use App\Models\StravaRefreshToken;
 use App\Models\User;
 
@@ -38,7 +39,7 @@ class StravaAuthService
         );
     }
 
-    public function setUserInitialRefreshToken(StravaAuthToken $authToken)
+    public function setUserInitialData(StravaAuthToken $authToken)
     {
         // Invalide all old tokens - if any
         StravaRefreshToken::whereUserId($authToken->user_id)->update(['active' => 0]);
@@ -46,16 +47,32 @@ class StravaAuthService
         $result = $this->client->getAccessToken($authToken);
 
         if ($result->successful()) {
-            StravaRefreshToken::updateOrCreate(
-                [ 'user_id' => $authToken->user_id ],
-                [ 'token' => $result->object()->refresh_token ]
-            );
-
-            StravaAccessToken::updateOrCreate(
-                [ 'user_id' => $authToken->user_id ],
-                [ 'token' => $result->object()->access_token, 'expires_at' => $result->object()->expires_at ]
-            );
+            // @todo Throw error
         }
+
+        $athleteData = $result->object()->athlete;
+
+        StravaProfile::updateOrCreate(
+            [ 'user_id' => $authToken->user_id ],
+            [
+                'strava_id' => $athleteData->id,
+                'username' => $athleteData->username,
+                'firstname' => $athleteData->firstname,
+                'lastname' => $athleteData->lastname,
+                'pic_large' => $athleteData->profile,
+                'pic_medium' => $athleteData->profile_medium
+            ]
+        );
+
+        StravaRefreshToken::updateOrCreate(
+            [ 'user_id' => $authToken->user_id ],
+            [ 'token' => $result->object()->refresh_token ]
+        );
+
+        StravaAccessToken::updateOrCreate(
+            [ 'user_id' => $authToken->user_id ],
+            [ 'token' => $result->object()->access_token, 'expires_at' => $result->object()->expires_at ]
+        );
     }
 
     public function userHasStravaAuth(User $user): bool
