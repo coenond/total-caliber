@@ -24,7 +24,7 @@ class StravaAuthorizeController extends Controller
         );
 
         $this->stravaAuthService->setUserInitialRefreshToken($stravaAuthToken);
- 
-        return Inertia::render('Dashboard', ['success_message' => 'Strava succesfully authenticated']);
+
+        return Inertia::render('Dashboard', ['success_message' => 'Strava successfully authenticated']);
     }
 }

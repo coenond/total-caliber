@@ -15,7 +15,7 @@ class StravaClient
     public function __construct()
     {
         $this->url = env('STRAVA_URL');
-        $this->clientId = env('STRAVA_CLIEND_ID');
+        $this->clientId = env('STRAVA_CLIENT_ID');
         $this->clientSecret = env('STRAVA_CLIENT_SECRET');
     }
 
