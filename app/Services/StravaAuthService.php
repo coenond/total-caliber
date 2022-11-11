@@ -40,7 +40,7 @@ class StravaAuthService
 
     public function setUserInitialRefreshToken(StravaAuthToken $authToken)
     {
-        // Invalide all old tokens - if any
+        // Invalidate all old tokens - if any
         StravaRefreshToken::whereUserId($authToken->user_id)->update(['active' => 0]);
 
         $result = $this->client->getAccessToken($authToken);
