@@ -39,8 +39,8 @@ import { Head } from '@inertiajs/inertia-vue3';
                         </thead>
                         <tbody>
                             <tr v-for="activity in $page.props.activities" :key="activity.id" class="border-b" >
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    #{{activity.id}}
+                                <td class="px-6 py-4 whitespace-nowrap text-underlined text-blue-400 text-sm font-medium">
+                                    <a :href="`https://www.strava.com/activities/${activity.id}`" target="_blank">{{activity.id}}</a>
                                 </td>
                                 <td class="text-sm font-light px-6 py-4 whitespace-nowrap">
                                     {{activity.name}}
