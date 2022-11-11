@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\StravaAccessToken;
 use App\Models\StravaAuthToken;
+use App\Models\StravaRefreshToken;
+use App\Models\User;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -21,12 +24,49 @@ class StravaClient
 
     public function getAccessToken(StravaAuthToken $authToken): Response
     {
-        return Http::post($this->url('api/v3/oauth/token'), [
+        return Http::post($this->url('oauth/token'), [
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
             'code' => $authToken->code,
             'grant_type' => 'authorization_code'
         ]);
+    }
+
+    public function refreshAccessToken(StravaRefreshToken $refreshToken): Response
+    {
+        return Http::post($this->url('oauth/token'), [
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'code' => $refreshToken->code,
+            'grant_type' => 'refresh_token'
+        ]);
+    }
+
+    public function getActivities(User $user): Response
+    {
+        $accessToken = $this->getValidAccessToken($user);
+        return Http::withToken($accessToken)->get($this->url('athlete/activities'));
+    }
+
+    private function getValidAccessToken(User $user): string
+    {
+        $accessToken = StravaAccessToken::whereUserId($user->id)->firstOrFail();
+
+        if ($accessToken->isNotExpired()) {
+            return $accessToken->token;
+        }
+
+        $refreshToken = StravaRefreshToken::whereUserId($user->id)->firstOrFail();
+        $refreshTokenResponse = $this->refreshAccessToken($refreshToken);
+
+        $refreshToken->token = $refreshTokenResponse->object()->refresh_token;
+        $refreshToken->save();
+
+        $accessToken->token = $refreshTokenResponse->object()->refresh_token;
+        $accessToken->expires_at = $refreshTokenResponse->object()->expires_at;
+        $accessToken->save();
+
+        return $accessToken->token;
     }
 
     private function url(string $uri): string
