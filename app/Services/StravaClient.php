@@ -37,7 +37,7 @@ class StravaClient
         return Http::post($this->url('oauth/token'), [
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'code' => $refreshToken->code,
+            'refresh_token' => $refreshToken->token,
             'grant_type' => 'refresh_token'
         ]);
     }
