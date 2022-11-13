@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/inertia-vue3'
 </script>
 
 <template>
@@ -20,21 +21,29 @@ import { Head } from '@inertiajs/inertia-vue3';
                         These are your latests activities on Strava {{ $page.props.auth.user.name }},
                     </h1>
 
+                    <Link
+                        href="/dashboard/my-activities/create-sync-job"
+                        method="post" as="button" type="button"
+                        preserve-state
+                        class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-blue-600 border border-blue-700 rounded-md shadow-sm hover:bg-blue-700">
+                            Sync my activities
+                    </Link>
+
                     <table v-if="$page.props.activities" class="min-w-full text-gray-900">
-                        <thead class="border-b">
+                        <thead class="border-b font-bold">
                             <tr>
-                            <th scope="col" class="text-sm font-medium px-6 py-4 text-left">
-                                #
-                            </th>
-                            <th scope="col" class="text-sm font-medium px-6 py-4 text-left">
-                                Name
-                            </th>
-                            <th scope="col" class="text-sm font-medium px-6 py-4 text-left">
-                                Distance
-                            </th>
-                            <th scope="col" class="text-sm font-medium px-6 py-4 text-left">
-                                Time
-                            </th>
+                                <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
+                                    #
+                                </th>
+                                <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
+                                    Name
+                                </th>
+                                <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
+                                    Distance
+                                </th>
+                                <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
+                                    Time
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
