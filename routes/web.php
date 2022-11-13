@@ -21,6 +21,7 @@ Route::get('health', HealthCheckResultsController::class);
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
     Route::get('/my-activities', [ActivityController::class, 'renderPage'])->name('my-activities');
+    Route::post('/my-activities/create-sync-job', [ActivityController::class, 'createSyncJob']);
 });
 
 require __DIR__.'/auth.php';
