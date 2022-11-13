@@ -15,9 +15,14 @@ class StravaActivityService
     /**
      * Update or create the user strava authorization code.
      */
-    public function getFromStrava(User $user): array
-    {
-        $result = $this->client->getActivities($user);
+    public function getFromStrava(
+        User $user,
+        int $page = 1,
+        int $perPage = 30,
+        ?Carbon $from = null,
+        ?Carbon $to = null
+    ): array {
+        $result = $this->client->getActivities($user, $page, $perPage, $from, $to);
         return (array) $result->object();
     }
 }

@@ -6,6 +6,7 @@ use App\Models\StravaAccessToken;
 use App\Models\StravaAuthToken;
 use App\Models\StravaRefreshToken;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -42,10 +43,19 @@ class StravaClient
         ]);
     }
 
-    public function getActivities(User $user): Response
+    public function getActivities(User $user, int $page, int $perPage, ?Carbon $from, ?Carbon $to): Response
     {
         $accessToken = $this->getValidAccessToken($user);
-        return Http::withToken($accessToken)->get($this->url('athlete/activities'));
+
+        $query = [
+            'page' => $page,
+            'per_page' => $perPage
+        ];
+
+        if ($from) $query['after'] = $from->timestamp;
+        if ($to) $query['before'] = $to->timestamp;
+
+        return Http::withToken($accessToken)->get($this->url('athlete/activities'), $query);
     }
 
     private function getValidAccessToken(User $user): string
