@@ -23,7 +23,7 @@ return new class extends Migration
             $table->bigInteger('moving_time'); 
             $table->float('total_elevation_gain');
             $table->dateTime('start_date');
-            $table->integer('utc_offset');
+            $table->string('timezone');
             $table->float('calories')->default(0);
             $table->boolean('trainer')->default(false);
             $table->boolean('commute')->default(false);

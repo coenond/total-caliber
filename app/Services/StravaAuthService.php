@@ -20,7 +20,7 @@ class StravaAuthService
     public function getAuthorizationUrl(): string
     {
         return self::stravaUrl . '/oauth/authorize?' . http_build_query([
-            'client_id' => env('STRAVA_CLIEND_ID'),
+            'client_id' => env('STRAVA_CLIENT_ID'),
             'response_type' => 'code',
             'approval_prompt' => 'force',
             'scope' => 'activity:read,activity:write,activity:read_all',
@@ -29,7 +29,7 @@ class StravaAuthService
     }
 
     /**
-     * Update or create the user strava authorization code. 
+     * Update or create the user strava authorization code.
      */
     public function storeUserStravaCode(User $user, string $code, string $scopes): StravaAuthToken
     {
@@ -41,7 +41,7 @@ class StravaAuthService
 
     public function setUserInitialData(StravaAuthToken $authToken)
     {
-        // Invalide all old tokens - if any
+        // Invalidate all old tokens - if any
         StravaRefreshToken::whereUserId($authToken->user_id)->update(['active' => 0]);
 
         $result = $this->client->getAccessToken($authToken);

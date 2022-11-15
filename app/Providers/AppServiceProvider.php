@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Services\StravaClient;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Health\Facades\Health;
+use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\RedisCheck;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +18,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Health::checks([
+            UsedDiskSpaceCheck::new(),
+            DatabaseCheck::new(),
+            RedisCheck::new(),
+        ]);
     }
 
     /**
