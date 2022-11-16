@@ -21,8 +21,10 @@ class ActivityController extends Controller
 
     public function renderPage(Request $req): Response
     {
+        $activities = $this->stravaActivityService->getFromDb($req->user())->sortByDesc('start_date')->values();
+
         return Inertia::render('MyActivities', [
-            'activities' => $this->stravaActivityService->getFromStrava($req->user())
+            'activities' => $activities
         ]);
     }
 
