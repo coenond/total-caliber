@@ -6,10 +6,10 @@ use App\Models\StravaActivity;
 use App\Models\StravaSportType;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class StravaActivityService
 {
-    private CONST stravaUrl = 'https://www.strava.com';
 
     public function __construct(
         private StravaClient $client
@@ -39,7 +39,7 @@ class StravaActivityService
         $filteredData = array_filter($rawActivities, fn($act) => !in_array($act->id, $allActivityIds));
         $sportTypes = StravaSportType::all()->keyBy('type');
 
-        $inserts = array_map(fn($activity) => [
+        $inserts = array_map(fn ($activity) => [
             'user_id' => $user->id,
             'strava_id' => $activity->id,
             'type_id' => $sportTypes[$activity->sport_type]->id,
@@ -57,8 +57,6 @@ class StravaActivityService
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ], $filteredData);
-
-        \Log::info($inserts);
 
         StravaActivity::insert($inserts);
     }
