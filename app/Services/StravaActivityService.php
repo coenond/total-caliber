@@ -29,6 +29,10 @@ class StravaActivityService
         return (array) $result->object();
     }
 
+    public function getFromDb(User $user): Collection {
+        return StravaActivity::whereUserId($user->id)->get();
+    }
+
     public function storeActivitiesFromRaw(User $user, array $rawActivities): void
     {
         $allActivityIds = StravaActivity::whereUserId($user->id)->pluck('strava_id')->toArray();
