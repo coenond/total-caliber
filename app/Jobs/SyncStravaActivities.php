@@ -39,18 +39,24 @@ class SyncStravaActivities implements ShouldQueue
 
         $activityService->storeActivitiesFromRaw($this->user, $activities);
 
-        if (count($activities) === self::PAGE_LIMIT) {
-            SyncStravaActivities::dispatch(
-                $this->user,
-                $this->stravaSyncJob,
-                $this->iteration + 1,
-                $this->activitiesFrom,
-                $this->activitiesTo
-            );
+        count($activities) === self::PAGE_LIMIT
+            ? $this->dispatchNewJob()
+            : $this->finishJob();
+    }
 
-            return;
-        }
+    private function dispatchNewJob(): void
+    {
+        SyncStravaActivities::dispatch(
+            $this->user,
+            $this->stravaSyncJob,
+            $this->iteration + 1,
+            $this->activitiesFrom,
+            $this->activitiesTo
+        );
+    }
 
+    private function finishJob(): void
+    {
         $this->stravaSyncJob->iterations = $this->iteration;
         $this->stravaSyncJob->completed_at = Carbon::now();
         $this->stravaSyncJob->save();
