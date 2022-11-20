@@ -22,6 +22,7 @@ Route::get('health', HealthCheckResultsController::class);
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
     Route::get('/goals', [UserGoalController::class, 'index'])->name('dashboard.goals');
+    Route::post('/goals', [UserGoalController::class, 'store'])->name('dashboard.goals.store');
     Route::get('/my-activities', [ActivityController::class, 'renderPage'])->name('my-activities');
     Route::post('/my-activities/create-sync-job', [ActivityController::class, 'createSyncJob']);
 });
