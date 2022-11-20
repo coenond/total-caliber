@@ -1,61 +1,48 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+
+
+const form = useForm({
+    goalTitle: '',
+    goalStart: '',
+    goalEnd: '',
+});
+
+const submit = () => {
+    form.post(route('dashboard.goals.store'));
+};
+
 </script>
 
-<template><div class="flex items-center justify-center p-12">
+<template><div class="flex p-12">
     <div class="mx-auto w-full max-w-[550px]">
-        <form action="#" method="POST">
+        <form @submit.prevent="submit">
             <div class="mb-5">
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
-                    Full Name
+                    Give your goal a name
                 </label>
-                <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Full Name"
-                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
-                    
-        
-        <Datepicker v-model="date" :enableTimePicker="false"></Datepicker>
-            </div>
-            <div class="mb-5">
-                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Email Address</label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="example@domain.com"
+                <TextInput
+                    v-model="form.goalTitle"
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                />
+                    placeholder="Example: New York Marathon"
+                    required autofocus />
             </div>
             <div class="mb-5">
-                <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">Subject</label>
-                <input
-                    type="text"
-                    name="subject"
-                    id="subject"
-                    placeholder="Enter your subject"
-                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                />
+                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When is your Goal/Event</label>
+                <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" />
             </div>
             <div class="mb-5">
-                <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">Message</label>
-                <textarea
-                    rows="4"
-                    name="message"
-                    id="message"
-                    placeholder="Type your message"
-                    class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                ></textarea>
+                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When id you start traning for this goal?</label>
+                <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" />
             </div>
-            <div>
-                <button class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
-                    Submit
-                </button>
-            </div>
+
+            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                Set Goal
+            </PrimaryButton>
         </form>
     </div>
 </div>
