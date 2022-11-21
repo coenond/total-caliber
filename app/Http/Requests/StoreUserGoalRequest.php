@@ -19,7 +19,7 @@ class StoreUserGoalRequest extends FormRequest
         return [
             'goalTitle' => 'required|string',
             'goalStart' => 'required|date',
-            'goalEnd' => 'required|date|after:goalStart'
+            'goalEnd' => 'required|date'
         ];
     }
 
