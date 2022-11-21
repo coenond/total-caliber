@@ -7,6 +7,7 @@ use App\Models\StravaAuthToken;
 use App\Models\StravaRefreshToken;
 use App\Models\User;
 use Carbon\Carbon;
+use Error;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
