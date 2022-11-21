@@ -36,7 +36,7 @@ const submit = () => {
                 <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" />
             </div>
             <div class="mb-5">
-                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When id you start traning for this goal?</label>
+                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When did you start traning for this goal?</label>
                 <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" />
             </div>
 
