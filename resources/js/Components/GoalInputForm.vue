@@ -37,7 +37,7 @@ const submit = () => {
             </div>
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When did you start traning for this goal?</label>
-                <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" />
+                <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" showNowButton nowButtonLabel="Today"/>
             </div>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
