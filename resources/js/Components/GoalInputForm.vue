@@ -19,7 +19,7 @@ const submit = () => {
 </script>
 
 <template><div class="flex p-12">
-    <div class="mx-auto w-full max-w-[550px]">
+    <div class="w-full max-w-[550px]">
         <form @submit.prevent="submit">
             <div class="mb-5">
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
