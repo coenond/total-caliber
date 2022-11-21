@@ -9,21 +9,23 @@ use Inertia\Inertia;
 
 class UserGoalController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
-        return Inertia::render('UserGoalOverview');
+        $user = $req->user();
+        $userGoal = UserGoal::whereUserId($user->id)->first();
+        return Inertia::render('UserGoalOverview', ['userGoal' => $userGoal]);
     }
 
     public function store(StoreUserGoalRequest $req)
     {
         $user = $req->user();
         // @todo: Move to service
-        UserGoal::create([
+       $goal = UserGoal::create([
             'user_id' => $user->id,
             'name' => $req->name(),
-            'start' => $req->start(),
-            'end' => $req->end()
+            'start' => $req->start()->toDateString(),
+            'end' => $req->end()->toDateString()
         ]);
-        return Inertia::render('UserGoalOverview');
+        return Inertia::render('UserGoalOverview', ['userGoal' => $goal]);
     }
 }
