@@ -55,7 +55,12 @@ class StravaClient
         if ($from) $query['after'] = $from->timestamp;
         if ($to) $query['before'] = $to->timestamp;
 
-        return Http::withToken($accessToken)->get($this->url('athlete/activities'), $query);
+        $result = Http::withToken($accessToken)->get($this->url('athlete/activities'), $query);
+        if (!$result->successful()) {
+            info($result);
+            throw new Error('Request failed with code' . $result->status());
+        }
+        return $result;
     }
 
     private function getValidAccessToken(User $user): string
