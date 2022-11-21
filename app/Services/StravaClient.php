@@ -74,6 +74,22 @@ class StravaClient
         $refreshToken = StravaRefreshToken::whereUserId($user->id)->firstOrFail();
         $refreshTokenResponse = $this->refreshAccessToken($refreshToken);
 
+        if (!$refreshTokenResponse->successful()) {
+            $stravaAuthToken = StravaAuthToken::whereUserId($user->id)->firstOrFail();
+            $response = $this->getAccessToken($stravaAuthToken);
+
+            StravaRefreshToken::updateOrCreate(
+                [ 'user_id' => $user->id ],
+                [ 'token' => $response->object()->refresh_token ]
+            );
+
+            StravaAccessToken::updateOrCreate(
+                [ 'user_id' => $user->id ],
+                [ 'token' => $response->object()->access_token, 'expires_at' => $response->object()->expires_at ]
+            );
+            return $response->object()->access_token;
+        }
+
         $refreshToken->token = $refreshTokenResponse->object()->refresh_token;
         $refreshToken->save();
 
