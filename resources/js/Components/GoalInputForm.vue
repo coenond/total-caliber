@@ -13,7 +13,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('dashboard.goals.store'));
+    // form.post(route('dashboard.goals.store'));
+    form.post('/dashboard/goals');
 };
 
 </script>
@@ -33,7 +34,7 @@ const submit = () => {
             </div>
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When is your Goal/Event</label>
-                <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" />
+                <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" :minDate="new Date()" />
             </div>
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When did you start traning for this goal?</label>
