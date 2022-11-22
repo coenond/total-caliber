@@ -13,22 +13,11 @@ use Illuminate\Support\Facades\Http;
 
 class StravaClient
 {
-    private $url;
-    private $clientId;
-    private $clientSecret;
-
-    public function __construct()
-    {
-        $this->url = env('STRAVA_URL');
-        $this->clientId = env('STRAVA_CLIENT_ID');
-        $this->clientSecret = env('STRAVA_CLIENT_SECRET');
-    }
-
     public function getAccessToken(StravaAuthToken $authToken): Response
     {
         return Http::post($this->url('oauth/token'), [
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
+            'client_id' => env('STRAVA_CLIENT_ID'),
+            'client_secret' => env('STRAVA_CLIENT_SECRET'),
             'code' => $authToken->code,
             'grant_type' => 'authorization_code'
         ]);
@@ -37,8 +26,8 @@ class StravaClient
     public function refreshAccessToken(StravaRefreshToken $refreshToken): Response
     {
         return Http::post($this->url('oauth/token'), [
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
+            'client_id' => env('STRAVA_CLIENT_ID'),
+            'client_secret' => env('STRAVA_CLIENT_SECRET'),
             'refresh_token' => $refreshToken->token,
             'grant_type' => 'refresh_token'
         ]);
@@ -103,6 +92,6 @@ class StravaClient
 
     private function url(string $uri): string
     {
-        return $this->url . $uri;
+        return env('STRAVA_URL') . $uri;
     }
 }
