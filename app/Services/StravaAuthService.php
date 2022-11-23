@@ -44,7 +44,7 @@ class StravaAuthService
         // Invalidate all old tokens - if any
         StravaRefreshToken::whereUserId($authToken->user_id)->update(['active' => 0]);
 
-        $result = $this->client->getAccessToken($authToken);
+        $result = $this->client->requestAccessTokenByAuthToken($authToken);
 
         if ($result->successful()) {
             // @todo Throw error

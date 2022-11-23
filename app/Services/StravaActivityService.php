@@ -25,7 +25,7 @@ class StravaActivityService
         ?Carbon $from = null,
         ?Carbon $to = null
     ): array {
-        $result = $this->client->getActivities($user, $page, $perPage, $from, $to);
+        $result = $this->client->requestAthleteActivities($user, $page, $perPage, $from, $to);
         return (array) $result->object();
     }
 

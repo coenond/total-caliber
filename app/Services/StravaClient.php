@@ -8,12 +8,20 @@ use App\Models\StravaRefreshToken;
 use App\Models\User;
 use Carbon\Carbon;
 use Error;
+use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class StravaClient
 {
-    public function getAccessToken(StravaAuthToken $authToken): Response
+    /**
+     * The grand type authorization_code should only be used when retrieving the first access token for the user.
+     *
+     * @param StravaAuthToken $authToken
+     *
+     * @return Response
+     */
+    public function requestAccessTokenByAuthToken(StravaAuthToken $authToken): Response
     {
         return Http::post($this->url('oauth/token'), [
             'client_id' => env('STRAVA_CLIENT_ID'),
@@ -23,7 +31,14 @@ class StravaClient
         ]);
     }
 
-    public function refreshAccessToken(StravaRefreshToken $refreshToken): Response
+    /**
+     * Request a new short live access token for the user.
+     *
+     * @param StravaRefreshToken $refreshToken
+     *
+     * @return Response
+     */
+    public function requestAccessTokenByRefreshToken(StravaRefreshToken $refreshToken): Response
     {
         return Http::post($this->url('oauth/token'), [
             'client_id' => env('STRAVA_CLIENT_ID'),
@@ -33,7 +48,7 @@ class StravaClient
         ]);
     }
 
-    public function getActivities(User $user, int $page, int $perPage, ?Carbon $from, ?Carbon $to): Response
+    public function requestAthleteActivities(User $user, int $page, int $perPage, ?Carbon $from, ?Carbon $to): Response
     {
         $accessToken = $this->getValidAccessToken($user);
 
@@ -46,10 +61,12 @@ class StravaClient
         if ($to) $query['before'] = $to->timestamp;
 
         $result = Http::withToken($accessToken)->get($this->url('athlete/activities'), $query);
+
         if (!$result->successful()) {
             info($result);
             throw new Error('Request failed with code' . $result->status());
         }
+
         return $result;
     }
 
@@ -62,32 +79,16 @@ class StravaClient
         }
 
         $refreshToken = StravaRefreshToken::whereUserId($user->id)->firstOrFail();
-        $refreshTokenResponse = $this->refreshAccessToken($refreshToken);
 
-        if (!$refreshTokenResponse->successful()) {
-            $stravaAuthToken = StravaAuthToken::whereUserId($user->id)->firstOrFail();
-            $response = $this->getAccessToken($stravaAuthToken);
+        /** @var Response */
+        $accessTokenResponse = $this->requestAccessTokenByRefreshToken($refreshToken);
 
-            StravaRefreshToken::updateOrCreate(
-                [ 'user_id' => $user->id ],
-                [ 'token' => $response->object()->refresh_token ]
-            );
-
-            StravaAccessToken::updateOrCreate(
-                [ 'user_id' => $user->id ],
-                [ 'token' => $response->object()->access_token, 'expires_at' => $response->object()->expires_at ]
-            );
-            return $response->object()->access_token;
-        }
-
-        $refreshToken->token = $refreshTokenResponse->object()->refresh_token;
+        $refreshToken->token = $accessTokenResponse->object()->refresh_token;
         $refreshToken->save();
-
-        $accessToken->token = $refreshTokenResponse->object()->refresh_token;
-        $accessToken->expires_at = $refreshTokenResponse->object()->expires_at;
+        $accessToken->token = $accessTokenResponse->object()->access_token;
         $accessToken->save();
 
-        return $accessToken->token;
+        return $accessTokenResponse->object()->access_token;
     }
 
     private function url(string $uri): string
