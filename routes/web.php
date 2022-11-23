@@ -3,7 +3,6 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserGoalController;
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\StravaWebhookController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,9 +18,6 @@ Route::get('/', function () {
 });
 
 Route::get('health', HealthCheckResultsController::class);
-
-Route::post('/strava/webhooks', [StravaWebhookController::class, 'handle']);
-Route::get('/strava/webhooks', [StravaWebhookController::class, 'verify']);
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
