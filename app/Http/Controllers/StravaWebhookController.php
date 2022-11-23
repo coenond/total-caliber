@@ -21,6 +21,6 @@ class StravaWebhookController extends Controller
      */
     public function verify(Request $req)
     {
-        return new JsonResponse($req->only('hub_challenge'));
+        return new JsonResponse(['hub.challenge' => $req->get('hub_challenge')]);
     }
 }
