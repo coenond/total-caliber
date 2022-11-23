@@ -57,6 +57,11 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'strava_webhooks' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/strava_webhooks.log'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
