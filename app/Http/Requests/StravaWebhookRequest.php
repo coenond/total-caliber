@@ -30,12 +30,12 @@ class StravaWebhookRequest extends FormRequest
 
     public function athleteId(): int
     {
-        return $this->get('owner_id');
+        return (int) $this->get('owner_id');
     }
 
     public function objectId(): int
     {
-        return $this->get('object_type');
+        return (int) $this->get('object_type');
     }
 
     public function updatesArray(): array
