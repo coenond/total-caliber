@@ -52,7 +52,7 @@ class StravaClient
     {
         $accessToken = $this->getValidAccessToken($user);
 
-        return Http::withToken($accessToken)->get($this->url('athlete/activities/' . $id));
+        return Http::withToken($accessToken)->get($this->url('activities/' . $id));
     }
 
     public function requestAthleteActivities(User $user, int $page, int $perPage, ?Carbon $from, ?Carbon $to): Response
