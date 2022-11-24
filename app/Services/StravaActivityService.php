@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\StravaWebhooks\StravaAspectTypeEnum;
+use App\Enums\StravaWebhooks\StravaObjectTypeEnum;
+use App\Jobs\CreateStravaActivityFromWebhook;
+use App\Jobs\DeleteStravaActivityFromWebhook;
+use App\Jobs\UpdateStravaActivityFromWebhook;
 use App\Models\StravaActivity;
 use App\Models\StravaSportType;
 use App\Models\User;
@@ -15,9 +20,6 @@ class StravaActivityService
         private StravaClient $client
     ) { }
 
-    /**
-     * Update or create the user strava authorization code.
-     */
     public function getListFromStrava(
         User $user,
         int $page = 1,
@@ -28,6 +30,41 @@ class StravaActivityService
         $result = $this->client->requestAthleteActivities($user, $page, $perPage, $from, $to);
         return (array) $result->object();
     }
+
+    public function getOneFromStrava(
+        User $user,
+        int $stravaActivityId
+    ): array {
+        $result = $this->client->requestActivity($user, $stravaActivityId);
+        return (array) $result->object();
+    }
+
+    public function getOneFromStravaAndStore(
+        User $user,
+        int $stravaActivityId
+    ): StravaActivity {
+        $result = $this->getOneFromStrava($user, $stravaActivityId);
+        $sportTypes = StravaSportType::all()->keyBy('type');
+        return StravaActivity::create([
+            'user_id' => $user->id,
+            'strava_id' => $stravaActivityId,
+            'type_id' => $sportTypes[$result['sport_type']]->id,
+            'name' => $result['name'],
+            'distance' => $result['distance'],
+            'moving_time' => $result['moving_time'],
+            'total_elevation_gain' => $result['total_elevation_gain'],
+            'start_date' => new Carbon($result['start_date']),
+            'timezone' => $result['timezone'],
+            'calories' => $result['calories'],
+            'trainer' => $result['trainer'],
+            'commute' => $result['commute'],
+            'manual' => $result['manual'],
+            'private' => $result['private'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+    }
+
 
     public function getListFromDb(User $user): Collection {
         return StravaActivity::whereUserId($user->id)->get();
@@ -59,5 +96,32 @@ class StravaActivityService
         ], $filteredData);
 
         StravaActivity::insert($inserts);
+    }
+
+    public function handleNewIncomingActivity(
+        StravaAspectTypeEnum $aspectType,
+        StravaObjectTypeEnum $objectType,
+        int $athleteId,
+        int $objectId,
+        array $updates
+    ): void {
+        if ($objectType === StravaObjectTypeEnum::athlete) {
+            // handle athlete update.
+            return;
+        }
+
+        switch ($aspectType) {
+            case StravaAspectTypeEnum::create:
+                CreateStravaActivityFromWebhook::dispatch($athleteId, $objectId);
+                break;
+            case StravaAspectTypeEnum::update:
+                UpdateStravaActivityFromWebhook::dispatch($athleteId, $objectId, $updates);
+                break;
+            case StravaAspectTypeEnum::delete:
+                DeleteStravaActivityFromWebhook::dispatch($athleteId, $objectId);
+                break;
+        }
+
+        return;
     }
 }
