@@ -1,4 +1,5 @@
 <script setup>
+import StravaBtn from '@/Components/StravaBtn.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 </script>
@@ -25,12 +26,9 @@ import { Head } from '@inertiajs/inertia-vue3';
                     <p v-else>
                        Click the button below for authorizing Total Caliber to post your progress.
                     </p>
-                    <div v-if="$page.props.stravaAuthUrl && !$page.props.userHasStravaAuth" class="p-6 mt-6 bg-white">
+                    <div v-if="$page.props.stravaAuthUrl" class="p-6 mt-6 bg-white">
                         <a :href=$page.props.stravaAuthUrl>
-                            <button class="group relative h-12 w-48 overflow-hidden rounded-lg bg-white text-lg shadow">
-                                <div class="absolute inset-0 w-3 bg-orange-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                                <span class="relative text-black group-hover:text-white">Connect to Strava</span>
-                            </button>
+                            <StravaBtn />
                         </a>
                     </div>
                 </div>
