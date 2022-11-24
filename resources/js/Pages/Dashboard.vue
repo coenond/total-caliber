@@ -26,7 +26,7 @@ import { Head } from '@inertiajs/inertia-vue3';
                     <p v-else>
                        Click the button below for authorizing Total Caliber to post your progress.
                     </p>
-                    <div v-if="$page.props.stravaAuthUrl" class="p-6 mt-6 bg-white">
+                    <div v-if="$page.props.stravaAuthUrl && !$page.props.userHasStravaAuth" class="p-6 mt-6 bg-white">
                         <a :href=$page.props.stravaAuthUrl>
                             <StravaBtn />
                         </a>
