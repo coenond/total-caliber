@@ -2,17 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StravaWebhookRequest;
+use App\Services\StravaActivityService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class StravaWebhookController extends Controller
 {
-    public function handle(Request $req)
+    public function __construct(
+        private StravaActivityService $stravaActivityService
+    ) { }
+
+    public function handle(StravaWebhookRequest $req)
     {
+        
         Log::channel('strava_webhooks')->info('=========================');
         Log::channel('strava_webhooks')->info(print_r($req->all(), true));
         Log::channel('strava_webhooks')->info('=========================');
+
+        $this->stravaActivityService->handleNewIncomingActivity(
+            $req->aspectType(),
+            $req->objectType(),
+            $req->athleteId(),
+            $req->objectId(),
+            $req->updatesArray()
+        );
         return new JsonResponse(['message' => 'ok']);
     }
 
