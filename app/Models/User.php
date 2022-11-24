@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +48,16 @@ class User extends Authenticatable
     public function stravaAuthToken(): HasOne
     {
         return $this->hasOne(StravaAuthToken::class);
+    }
+
+    public function stravaSyncJobs(): HasMany
+    {
+        return $this->hasMany(StravaSyncJob::class);
+    }
+
+    public function hasSyncJobOnCoolDown(): bool
+    {
+        $lastSyncJob = $this->stravaSyncJobs()->orderByDesc('created_at')->first();
+        return $lastSyncJob && $lastSyncJob->created_at->diffInHours() < 1;
     }
 }

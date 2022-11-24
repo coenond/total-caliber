@@ -21,7 +21,15 @@ import { Link } from '@inertiajs/inertia-vue3'
                         These are your latests activities on Strava {{ $page.props.auth.user.name }},
                     </h1>
 
+                    <div v-if="$page.props.syncIsOnCoolDown" class="py-4">
+                        <span class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-gray-400 border border-gray-500 rounded-md shadow-sm">
+                            Sync my activities
+                        </span>
+                        <p>Sync jobs can only be done once per hour. New or updated activities will automatically be uploaded to Total Caliber</p>
+                    </div>
+
                     <Link
+                        v-else
                         href="/dashboard/my-activities/create-sync-job"
                         method="post" as="button" type="button"
                         preserve-state
