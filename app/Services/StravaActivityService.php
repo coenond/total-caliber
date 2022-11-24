@@ -18,7 +18,7 @@ class StravaActivityService
     /**
      * Update or create the user strava authorization code.
      */
-    public function getFromStrava(
+    public function getListFromStrava(
         User $user,
         int $page = 1,
         int $perPage = 30,
@@ -29,7 +29,7 @@ class StravaActivityService
         return (array) $result->object();
     }
 
-    public function getFromDb(User $user): Collection {
+    public function getListFromDb(User $user): Collection {
         return StravaActivity::whereUserId($user->id)->get();
     }
 

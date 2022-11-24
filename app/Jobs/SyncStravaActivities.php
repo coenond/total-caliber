@@ -29,7 +29,7 @@ class SyncStravaActivities implements ShouldQueue
 
     public function handle(StravaActivityService $activityService): void
     {
-        $activities = $activityService->getFromStrava(
+        $activities = $activityService->getListFromStrava(
             $this->user,
             $this->iteration,
             self::PAGE_LIMIT,
