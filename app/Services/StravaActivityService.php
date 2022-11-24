@@ -48,7 +48,7 @@ class StravaActivityService
         return StravaActivity::create([
             'user_id' => $user->id,
             'strava_id' => $stravaActivityId,
-            'type_id' => $sportTypes[$result['sport_type']]->id,
+            'type_id' => $sportTypes[$result['activity_types']]->id,
             'name' => $result['name'],
             'distance' => $result['distance'],
             'moving_time' => $result['moving_time'],
