@@ -17,9 +17,9 @@ class StoreUserGoalRequest extends FormRequest
     public function rules()
     {
         return [
-            'goalTitle' => 'required|string',
-            'goalStart' => 'required|date',
-            'goalEnd' => 'required|date'
+            'goalTitle' => 'required',
+            'goalStart' => 'required',
+            'goalEnd' => 'required'
         ];
     }
 
