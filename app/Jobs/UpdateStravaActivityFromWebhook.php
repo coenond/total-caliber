@@ -44,7 +44,7 @@ class UpdateStravaActivityFromWebhook implements ShouldQueue
 
     private function updateTitle(StravaActivity &$activity): void
     {
-        $activity->title = $this->updates['title'];
+        $activity->name = $this->updates['title'];
     }
 
     private function updateType(StravaActivity &$activity): void
