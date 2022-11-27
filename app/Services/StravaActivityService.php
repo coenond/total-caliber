@@ -45,9 +45,10 @@ class StravaActivityService
     ): StravaActivity {
         $result = $this->getOneFromStrava($user, $stravaActivityId);
         $sportTypes = StravaSportType::all()->keyBy('type');
-        return StravaActivity::create([
+        return StravaActivity::updateOrCreate([
             'user_id' => $user->id,
             'strava_id' => $stravaActivityId,
+        ], [
             'type_id' => $sportTypes[$result['sport_type']]->id,
             'name' => $result['name'],
             'distance' => $result['distance'],
@@ -64,7 +65,6 @@ class StravaActivityService
             'updated_at' => Carbon::now()
         ]);
     }
-
 
     public function getListFromDb(User $user): Collection {
         return StravaActivity::whereUserId($user->id)->get();
