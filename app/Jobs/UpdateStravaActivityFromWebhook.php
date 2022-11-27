@@ -25,11 +25,11 @@ class UpdateStravaActivityFromWebhook implements ShouldQueue
 
     public function handle(): void
     {
-        $user = StravaProfile::whereStravaId($this->athleteId)->firstOrFail()->user;
+        $stravaProfile = StravaProfile::whereStravaId($this->athleteId)->firstOrFail();
 
         $activity = StravaActivity::whereStravaId($this->activityId)
-            ->whereUserId($user->id)
-            ->findOrFail();
+            ->whereUserId($stravaProfile->user_id)
+            ->firstOrFail();
 
         if (array_key_exists('title', $this->updates)) {
             $this->updateTitle($activity);
