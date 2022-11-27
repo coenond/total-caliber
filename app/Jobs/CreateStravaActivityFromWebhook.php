@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\StravaProfile;
-use App\Models\User;
 use App\Services\StravaActivityService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
