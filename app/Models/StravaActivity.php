@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class StravaActivity extends Model
 {
@@ -13,6 +14,11 @@ class StravaActivity extends Model
 
     protected $guarded = ['id'];
     protected $appends = ['readableDistanceInKm', 'readableDistanceInMiles', 'readableTime'];
+
+    public function sportType(): HasOne
+    {
+        return $this->hasOne(StravaSportType::class, 'id', 'type_id');
+    }
 
     protected function getReadableDistanceInKmAttribute(): string
     {

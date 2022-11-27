@@ -41,10 +41,10 @@ import { Link } from '@inertiajs/inertia-vue3'
                         <thead class="border-b font-bold">
                             <tr>
                                 <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
-                                    #
+                                    Name
                                 </th>
                                 <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
-                                    Name
+                                    Type
                                 </th>
                                 <th scope="col" class="text-sm font-medium px-6 py-4 text-left font-bold">
                                     Distance
@@ -56,11 +56,11 @@ import { Link } from '@inertiajs/inertia-vue3'
                         </thead>
                         <tbody>
                             <tr v-for="activity in $page.props.activities" :key="activity.id" class="border-b" >
-                                <td class="px-6 py-4 whitespace-nowrap text-underlined text-blue-400 text-sm font-medium">
-                                    <a :href="`https://www.strava.com/activities/${activity.strava_id}`" target="_blank">{{activity.strava_id}}</a>
+                                <td class="text-sm font-light px-6 py-4">
+                                    <a :href="`https://www.strava.com/activities/${activity.strava_id}`" class="hover:underline" target="_blank">{{activity.name}}</a>
                                 </td>
                                 <td class="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                    {{activity.name}}
+                                    {{activity.sport_type.type}}
                                 </td>
                                 <td class="text-sm font-light px-6 py-4 whitespace-nowrap">
                                     {{activity.readableDistanceInKm}}
