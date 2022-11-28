@@ -1,8 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, useForm } from '@inertiajs/inertia-vue3';
 import GoalInputForm from '@/Components/GoalInputForm.vue';
-// import TextInput from '@/Components/TextInput.vue';
+
+const stravaDescriptionForm = useForm({
+    showWeekTotals: false,
+});
+
+
 </script>
 
 <template>
@@ -32,6 +37,11 @@ import GoalInputForm from '@/Components/GoalInputForm.vue';
                         </p>
                         <GoalInputForm />
                     </div>
+                </div>
+            </div>
+            <div v-if="$page.props.userGoal !== null" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
+                <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Your Strava Description</h2>
                 </div>
             </div>
         </div>
