@@ -28,7 +28,7 @@ import GoalInputForm from '@/Components/GoalInputForm.vue';
                     </div>
                     <div v-else>
                         <p>
-                            Set your goals to track your effords.
+                            Set your goals to track your efforts.
                         </p>
                         <GoalInputForm />
                     </div>
