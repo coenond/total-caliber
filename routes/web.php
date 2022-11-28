@@ -9,7 +9,7 @@ use Inertia\Inertia;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
