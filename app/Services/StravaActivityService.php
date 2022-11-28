@@ -66,8 +66,11 @@ class StravaActivityService
         ]);
     }
 
-    public function getListFromDb(User $user): Collection {
-        return StravaActivity::with('sportType')->whereUserId($user->id)->get();
+    public function getListFromDb(User $user, int $limit): Collection {
+        return StravaActivity::with('sportType')
+            ->whereUserId($user->id)
+            ->limit($limit)
+            ->get();
     }
 
     public function storeActivitiesFromRaw(User $user, array $rawActivities): void
