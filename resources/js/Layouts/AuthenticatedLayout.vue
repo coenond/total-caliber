@@ -39,6 +39,10 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
+                        
+                                
+                        <img class="w-[220px] ml-[-8px]" src="images/pwrdBy_strava_horiz_gray.svg" />
+
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">

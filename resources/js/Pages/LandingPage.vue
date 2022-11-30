@@ -106,7 +106,8 @@ if (scrollpos > 10) {
       <div class="container px-3 mx-auto flex md:flex-row justify-center tracking-wide">
         <!--Left Col-->
         <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-          <p class="tracking-loose w-full">Make every effort count</p>
+          <!-- <p class="tracking-loose w-full">Make every effort count</p> -->
+          <img class="w-[220px] ml-[-8px]" src="images/pwrdBy_strava_horiz_gray.svg" />
           <h1 class="my-4 text-5xl font-bold leading-tight">
             Effortlessly tracking progress towards your <span class="underline">goals</span>
           </h1>
