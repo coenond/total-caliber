@@ -12,7 +12,10 @@ use App\Models\StravaSportType;
 use App\Models\User;
 use App\Utils\QuerySorter;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 class StravaActivityService
 {
@@ -29,6 +32,8 @@ class StravaActivityService
         ?Carbon $to = null
     ): array {
         $result = $this->client->requestAthleteActivities($user, $page, $perPage, $from, $to);
+        if (!$result->successful()) $this->markAsFailed($result);
+
         return (array) $result->object();
     }
 
@@ -37,6 +42,8 @@ class StravaActivityService
         int $stravaActivityId
     ): array {
         $result = $this->client->requestActivity($user, $stravaActivityId);
+        if (!$result->successful()) $this->markAsFailed($result);
+
         return (array) $result->object();
     }
 
@@ -130,5 +137,12 @@ class StravaActivityService
         }
 
         return;
+    }
+
+    private function markAsFailed(Response $result): void
+    {
+        Log::channel('strava_webhooks')->info(Carbon::now()->toDateTimeString());
+        Log::channel('strava_webhooks')->info(print_r((array) $result->object(), true));
+        throw new Exception('Strava request failed with code ' . $result->status());
     }
 }

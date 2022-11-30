@@ -16,11 +16,6 @@ class StravaWebhookController extends Controller
 
     public function handle(StravaWebhookRequest $req)
     {
-        
-        Log::channel('strava_webhooks')->info('=========================');
-        Log::channel('strava_webhooks')->info(print_r($req->all(), true));
-        Log::channel('strava_webhooks')->info('=========================');
-
         $this->stravaActivityService->handleNewIncomingActivity(
             $req->aspectType(),
             $req->objectType(),
