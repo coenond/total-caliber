@@ -10,6 +10,7 @@ use App\Jobs\UpdateStravaActivityFromWebhook;
 use App\Models\StravaActivity;
 use App\Models\StravaSportType;
 use App\Models\User;
+use App\Utils\QuerySorter;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -66,11 +67,14 @@ class StravaActivityService
         ]);
     }
 
-    public function getListFromDb(User $user, int $limit): Collection {
-        return StravaActivity::with('sportType')
+    public function getListFromDb(User $user, int $limit, QuerySorter $sorter = null): Collection {
+        $query = StravaActivity::with('sportType')
             ->whereUserId($user->id)
-            ->limit($limit)
-            ->get();
+            ->limit($limit);
+
+        $sorter && $sorter->addSorting($query);
+
+        return $query->get();
     }
 
     public function storeActivitiesFromRaw(User $user, array $rawActivities): void

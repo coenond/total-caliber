@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Jobs\SyncStravaActivities;
 use App\Models\StravaSyncJob;
 use App\Services\StravaActivityService;
+use App\Utils\QuerySorter;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-
 
 class ActivityController extends Controller
 {
@@ -22,7 +22,8 @@ class ActivityController extends Controller
     public function renderPage(Request $req): Response
     {
         $user = $req->user();
-        $activities = $this->stravaActivityService->getListFromDb($user, 100)->sortByDesc('start_date')->values();
+        $sorter = new QuerySorter('start_date', true);
+        $activities = $this->stravaActivityService->getListFromDb($user, 100, $sorter)->values();
 
         return Inertia::render('MyActivities', [
             'activities' => $activities,
