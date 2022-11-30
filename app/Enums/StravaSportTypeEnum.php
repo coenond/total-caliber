@@ -45,4 +45,12 @@ enum StravaSportTypeEnum
     case Windsurf;
     case Workout;
     case Yoga;
+
+    public static function supportedForGoals(): array
+    {
+        return array_map(
+            fn ($type) => $type->name,
+            [StravaSportTypeEnum::Run, StravaSportTypeEnum::Ride, StravaSportTypeEnum::Swim]
+        );
+    }
 }
