@@ -38,10 +38,8 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
                         </div>
-
-                        
                                 
-                        <img class="w-[220px] ml-[-8px]" src="images/pwrdBy_strava_horiz_gray.svg" />
+                        <img class="w-[150px] ml-[-8px]" src="/images/pwrdBy_strava_horiz_gray.svg" />
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
