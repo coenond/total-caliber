@@ -1,10 +1,18 @@
-<script setup>
+<script setup lang="ts">
+import { PropType } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/inertia-vue3';
 import GoalInputForm from '@/Components/GoalInputForm.vue';
 
 const stravaDescriptionForm = useForm({
     showWeekTotals: false,
+});
+
+const props = defineProps({
+    sportTypes: {
+        type: Array as PropType<Array<string>>,
+        required: true,
+    },
 });
 
 
@@ -35,7 +43,7 @@ const stravaDescriptionForm = useForm({
                         <p>
                             Set your goals to track your efforts.
                         </p>
-                        <GoalInputForm />
+                        <GoalInputForm :sport-types="props.sportTypes" />
                     </div>
                 </div>
             </div>

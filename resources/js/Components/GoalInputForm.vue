@@ -1,20 +1,44 @@
 <script setup>
+import { computed} from 'vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import BadgeButton from '@/Components/BadgeButton.vue';
 
+
+const props = defineProps({
+    sportTypes: {
+        type: Array,
+        required: true,
+    },
+});
 
 const form = useForm({
     goalTitle: '',
     goalStart: '',
     goalEnd: '',
+    selectedSportTypes: [],
 });
 
 const submit = () => {
     // form.post(route('dashboard.goals.store'));
     form.post('/dashboard/goals');
+};
+
+
+const isSelected = (type) => {
+    return form.selectedSportTypes.includes(type);
+}
+
+const toggle = (type) => {
+    if (isSelected(type)) {
+        const index = form.selectedSportTypes.indexOf(type);
+        form.selectedSportTypes.splice(index, 1);
+    } else {
+        form.selectedSportTypes.push(type);
+    }
 };
 
 </script>
@@ -39,6 +63,11 @@ const submit = () => {
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When did you start traning for this goal?</label>
                 <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" showNowButton nowButtonLabel="Today"/>
+            </div>
+
+            <div class="mb-5">
+                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
+                <BadgeButton v-for="sportType in props.sportTypes" :key="sportType" class="border-b" :sportType="sportType" :selected="isSelected(sportType)" @click="toggle(sportType)" />
             </div>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
