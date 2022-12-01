@@ -67,7 +67,7 @@ const toggle = (type) => {
 
             <div class="mb-5">
                 <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
-                <BadgeButton v-for="sportType in props.sportTypes" :key="sportType" class="border-b" :sportType="sportType" :selected="isSelected(sportType)" @click="toggle(sportType)" />
+                <BadgeButton v-for="sportType in props.sportTypes" :key="sportType" class="border-b" :type="sportType" :selected="isSelected(sportType)" @click="toggle(sportType)" />
             </div>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
