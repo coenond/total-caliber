@@ -4,7 +4,7 @@ import { computed } from 'vue';
 defineEmits(['click']);
 
 const props = defineProps({
-    sportType: {
+    type: {
         type: String,
         required: true,
     },
@@ -25,7 +25,7 @@ const selectedClass = computed(() => {
     <span
         class="cursor-pointer mx-1 inline-flex items-center justify-center px-3 py-2 text-xs font-bold leading-none border-2 rounded"
         :class="selectedClass"
-        v-on:click="$emit('click', sportType)">
-        {{ sportType }}
+        v-on:click="$emit('click', type)">
+        {{ type }}
     </span>
 </template>
