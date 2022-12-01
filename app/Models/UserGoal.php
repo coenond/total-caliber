@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class UserGoal extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
+
+    protected $dates = [
+        'start',
+        'end',
+    ];
 
     public function sportTypes(): BelongsToMany
     {
