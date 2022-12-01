@@ -48,6 +48,15 @@ class StravaClient
         ]);
     }
 
+    public function requestUpdateActivityDescription(User $user, int $id, string $description): Response
+    {
+        $accessToken = $this->getValidAccessToken($user);
+
+        return Http::withToken($accessToken)->put($this->url('activities/' . $id), [
+            'description' => $description
+        ]);
+    }
+
     public function requestActivity(User $user, int $id): Response
     {
         $accessToken = $this->getValidAccessToken($user);
