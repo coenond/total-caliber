@@ -57,7 +57,7 @@ const toggle = (key) => {
                     </div>
                 </div>
             </div>
-            <div v-if="$page.props.userGoal !== null" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
+            <div v-if="props.hasGoal" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <div class="flex mb-6">
                         <h2 class="flex-auto font-semibold text-xl text-gray-800 leading-tight">Total Caliber Strava Description</h2>
