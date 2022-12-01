@@ -55,7 +55,7 @@ const submit = () => {
         </div>
     </div>
 
-    <div class="w-screen flex justify-center items-center mt-[-280px]">
+    <div class="w-screen flex justify-center items-center mt-[-190px] xl:mt-[-280px]">
         <div class="p-10 bg-white rounded-xl drop-shadow-xl space-y-5 md:w-[460px]" action="">
             <h1 class="text-center text-3xl">Total Caliber</h1>
             <form @submit.prevent="submit">
