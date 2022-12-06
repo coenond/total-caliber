@@ -10,6 +10,13 @@ class UserStravaDescription extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    
+    protected $casts = [
+        'enabled' => 'boolean',
+        'totals' => 'boolean',
+        'week_stats' => 'boolean',
+        'month_stats' => 'boolean',
+    ];
 
     public function user(): BelongsTo
     {
