@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\StravaSportTypeEnum;
 use App\Http\Requests\StoreUserGoalRequest;
 use App\Models\UserGoal;
+use App\Models\UserStravaDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -15,6 +16,7 @@ class UserGoalController extends Controller
     {
         $user = $req->user();
         $userGoal = UserGoal::whereUserId($user->id)->first();
+        $userStravaDescription = UserStravaDescription::whereUserId($user->id)->first();
         return Inertia::render('UserGoalOverview', [
             'hasGoal' => !empty($userGoal),
             'name' => $userGoal->name,
@@ -22,6 +24,8 @@ class UserGoalController extends Controller
             'startReadable' => $userGoal->start->toFormattedDateString(),
             'end' => $userGoal->end->toDateString(),
             'endReadable' => $userGoal->end->toFormattedDateString(),
+
+            'userStravaDescription' => $userStravaDescription,
 
             'sportTypes' => StravaSportTypeEnum::supportedForGoals()
         ]);
