@@ -23,6 +23,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
     Route::get('/goals', [UserGoalController::class, 'index'])->name('dashboard.goals');
     Route::post('/goals', [UserGoalController::class, 'store'])->name('dashboard.goals.store');
+    Route::post('/goals/strava-description', [UserGoalController::class, 'storeStravaDescription'])->name('dashboard.goals.storeStravaDescription');
     Route::get('/my-activities', [ActivityController::class, 'renderPage'])->name('my-activities');
     Route::post('/my-activities/create-sync-job', [ActivityController::class, 'createSyncJob']);
 });

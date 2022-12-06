@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\StravaSportTypeEnum;
 use App\Http\Requests\StoreUserGoalRequest;
+use App\Http\Requests\StoreUserStravaDescriptionRequest;
 use App\Models\UserGoal;
 use App\Models\UserStravaDescription;
 use Illuminate\Http\Request;
@@ -42,6 +43,20 @@ class UserGoalController extends Controller
             'end' => $req->end()->toDateString()
         ]);
         $userGoal->sportTypes()->sync($req->selectedSportTypes());
+
+        return Redirect::route('dashboard.goals');
+    }
+
+    public function storeStravaDescription(StoreUserStravaDescriptionRequest $req)
+    {
+        $user = $req->user();
+        // @todo: Move to service
+        UserStravaDescription::updateOrCreate([ 'user_id' => $user->id ], [
+            'enabled' => $req->enabled(),
+            'totals' => $req->showTotals(),
+            'week_stats' => $req->showWeekStats(),
+            'month_stats' => $req->showMonthStats()
+        ]);
 
         return Redirect::route('dashboard.goals');
     }
