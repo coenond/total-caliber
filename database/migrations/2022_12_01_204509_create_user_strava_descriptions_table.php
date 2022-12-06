@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
 
+            $table->boolean('enabled')->default(true);
             $table->boolean('totals')->default(true);
             $table->boolean('week_stats')->default(true);
             $table->boolean('month_stats')->default(true);
