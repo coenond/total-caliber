@@ -20,6 +20,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@vuepic/vue-datepicker": "^3.5.3"
+        "@vuepic/vue-datepicker": "^3.5.3",
+        "chart.js": "^4.0.1"
     }
 }
