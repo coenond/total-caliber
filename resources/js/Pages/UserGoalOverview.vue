@@ -12,13 +12,14 @@ const props = defineProps({
     end: { type: String },
     endReadable: { type: String },
     sportTypes: { type: Array, required: true },
+    userStravaDescription: { type: Object, required: false },
 });
 
 const stravaDescriptionForm = useForm({
-    enabled: false,
-    showTotals: false,
-    showWeekStats: false,
-    showMonthStats: false,
+    enabled: props.userStravaDescription?.enabled || false,
+    showTotals: props.userStravaDescription?.totals || false,
+    showWeekStats: props.userStravaDescription?.week_stats || false,
+    showMonthStats: props.userStravaDescription?.month_stats || false,
 });
 
 const toggleStravaDescription = () => {
@@ -77,7 +78,7 @@ const toggle = (key) => {
                     </div>
 
                     <div v-if="stravaDescriptionForm.enabled" class="mt-12">
-                        <strong>Example Description</strong>
+                        <strong>Description preview</strong>
                         <hr class="my-3"/>
                         <div class="font-mono">
                             <p>&gt;&gt; Training Caliber &lt;&lt;</p>
