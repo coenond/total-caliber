@@ -23,7 +23,6 @@ const form = useForm({
 });
 
 const submit = () => {
-    // form.post(route('dashboard.goals.store'));
     form.post('/dashboard/goals');
 };
 
