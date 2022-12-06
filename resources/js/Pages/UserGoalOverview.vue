@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/inertia-vue3';
 import GoalInputForm from '@/Components/GoalInputForm.vue';
 import BadgeButton from '@/Components/BadgeButton.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
     hasGoal: { type: Boolean, required: true },
@@ -24,10 +25,19 @@ const stravaDescriptionForm = useForm({
 
 const toggleStravaDescription = () => {
     stravaDescriptionForm.enabled = !stravaDescriptionForm.enabled;
+    if (!stravaDescriptionForm.enabled) {
+        stravaDescriptionForm.post('/dashboard/goals/strava-description');
+    }
+
 };
 const toggle = (key) => {
     stravaDescriptionForm[key] = !stravaDescriptionForm[key]
 };
+
+const submit = () => {
+    stravaDescriptionForm.post('/dashboard/goals/strava-description');
+};
+
 </script>
 
 <template>
@@ -60,21 +70,28 @@ const toggle = (key) => {
             </div>
             <div v-if="props.hasGoal" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
-                    <div class="flex mb-6">
-                        <h2 class="flex-auto font-semibold text-xl text-gray-800 leading-tight">Total Caliber Strava Description</h2>
+                    <div class="flex mb-6 justify-between">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Total Caliber Strava Description</h2>
                         <div>
-                        <label class="flex-auto inline-flex relative items-center mr-5 cursor-pointer">
+                        <label class="inline-flex relative items-center cursor-pointer">
                             <input @click="toggleStravaDescription()" type="checkbox" value="" class="sr-only peer" :checked="stravaDescriptionForm.enabled">
                             <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#734b6d]"></div>
                         </label>
                         </div>
                     </div>
 
-                    <div v-if="stravaDescriptionForm.enabled" class="mb-5">
-                        <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
-                        <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggle('showTotals')" />
-                        <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggle('showWeekStats')" />
-                        <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggle('showMonthStats')" />
+                    <div v-if="stravaDescriptionForm.enabled" class="flex justify-between">
+                        <div class="mb-5">
+                            <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
+                            <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggle('showTotals')" />
+                            <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggle('showWeekStats')" />
+                            <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggle('showMonthStats')" />
+                        </div>
+                        <div>
+                            <PrimaryButton v-if="stravaDescriptionForm.isDirty" @click="submit()" :class="{ 'opacity-25': stravaDescriptionForm.processing }">
+                                Save
+                            </PrimaryButton>
+                        </div>
                     </div>
 
                     <div v-if="stravaDescriptionForm.enabled" class="mt-12">
