@@ -9,11 +9,27 @@ use Inertia\Inertia;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::get('/', function () {
+    $faq1 = [
+        [
+            'q' => 'What activity data does Total Caliber store from me?',
+            'a' => 'We store the following fields: title, distance, moving time, elevation gain, start_date, timezone, calories burned, indoor trainer (y/n), commute (y/n), manual (y/n).'
+        ],
+        [
+            'q' => 'How can I delete my account?',
+            'a' => 'You can disconnect your account from your app settings on the Strava website, or under your profile within our dashboard.'
+        ],
+        [
+            'q' => 'Is Total Caliber part of Strava?',
+            'a' => 'No. totalcaliber.com is not part, or owned in any form by Strava. We use the Strava Open API to communicate between the systems.'
+        ]
+    ];
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'faq1' => $faq1,
+        'faq2' => $faq1,
     ]);
 });
 
