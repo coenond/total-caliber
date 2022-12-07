@@ -1,11 +1,13 @@
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
-defineProps({
+const props = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+    faq1: Array,
+    faq2: Array,
 })
 var scrollpos = window.scrollY;
 var header = document.getElementById("header");
@@ -62,7 +64,7 @@ if (scrollpos > 10) {
     <Head title="Total Caliber" />
     <div class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
     <!--Nav-->
-    <nav id="header" class="fixed w-full z-30 top-0 text-white">
+    <nav id="header" class="fixed w-full z-30 top-0 text-white pt-4">
       <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
         <div class="pl-4 flex items-center">
           <a class="toggleColour text-white no-underline hover:no-underline font-bold text-l lg:text-2xl" href="#">
@@ -80,7 +82,7 @@ if (scrollpos > 10) {
         </div>
         <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-gray-100 p-4 lg:p-0 z-20" id="nav-content">
           <ul class="list-reset lg:flex justify-end flex-1 items-center">
-            <li class="mr-3">
+            <!-- <li class="mr-3">
               <a class="inline-block py-2 px-4 text-gray-200 font-bold no-underline" href="#">How it works</a>
             </li>
             <li class="mr-3">
@@ -88,7 +90,7 @@ if (scrollpos > 10) {
             </li>
             <li class="mr-3">
               <a class="inline-block text-gray-200 no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">FAQ</a>
-            </li>
+            </li> -->
           </ul>
           <Link :href="route('login')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Log in</Link>
           <!-- <button
@@ -112,7 +114,7 @@ if (scrollpos > 10) {
             Effortlessly tracking progress towards your <span class="underline">goals</span>
           </h1>
           <p class="leading-normal text-2xl mb-8">
-            Connect with Strava and start tracking
+            We all deserve a reminder of how far we’ve come
           </p>
           <Link v-if="canRegister" :href="route('register')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Create Account</Link>
         </div>
@@ -155,10 +157,17 @@ if (scrollpos > 10) {
         <div class="flex flex-wrap">
           <div class="w-5/6 sm:w-1/2 p-6 lg:pt-[100px]">
             <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3 ">
-              Lorem ipsum dolor sit amet
+              1. Create an account
             </h3>
             <p class="text-gray-600 mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+              It's free and safe. This is not your Strava account.
+            </p>
+            <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3 pt-8">
+              2. Sync your Strava activities
+            </h3>
+            <p class="text-gray-600">
+              We will import only basic information about your activities. This is needed to make the right calculations for your efforts.
+              It's always visible for you what data we imported, and is managed by you.
             </p>
           </div>
           <div class="w-full sm:w-1/2 p-6">  
@@ -166,16 +175,22 @@ if (scrollpos > 10) {
           </div>
         </div>
         <div class="flex flex-wrap flex-col-reverse sm:flex-row">
-          <div class="w-full sm:w-1/2 p-6 mt-6">
+          <div class="w-full sm:w-1/2 p-6">
             <img class="w-5/6 sm:h-128 mx-auto" src="images/Swim-01.svg" />
           </div>
           <div class="w-full sm:w-1/2 p-6 mt-6 lg:pt-[100px]">
             <div class="align-middle">
               <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
-                Lorem ipsum dolor sit amet
+                3. Set your next goal
               </h3>
               <p class="text-gray-600 mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+                Tell us about your next goal and when you started training, and we can calculate the rest.
+              </p>
+              <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3 pt-8">
+                4. Keep on grinding!
+              </h3>
+              <p class="text-gray-600 mb-8">
+                With every activity completed, we’ll update your Strava description to give you an overview of your progress.
               </p>
             </div>
           </div>
@@ -339,6 +354,36 @@ if (scrollpos > 10) {
         </div>
       </div>
     </section>
+    <section v-if="true" class="bg-gray-100 py-8">
+      <div class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
+        <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+          Frequently Asked Questions
+        </h2>
+        <div class="w-full mb-12">
+          <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+        </div>
+        <div class="grid pt-8 text-left md:gap-16 dark:border-gray-700 md:grid-cols-2">
+          <div>
+              <div v-for="faq in $page.props.faq1" class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 text-gray-800">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      {{ faq['q'] }}
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">{{ faq['a'] }}</p>
+              </div>
+          </div>
+          <div>
+              <div v-for="faq in $page.props.faq2" class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 text-gray-800">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      {{ faq['q'] }}
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">{{ faq['a'] }}</p>
+              </div>
+          </div>
+      </div>
+      </div>
+    </section>
     <!-- Change the colour #f8fafc to match the previous section colour -->
     <svg class="wave-top" viewBox="0 0 1439 147" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -361,19 +406,19 @@ if (scrollpos > 10) {
         </g>
       </g>
     </svg>
-    <section class="container mx-auto text-center py-6">
+    <section class="container mx-auto text-center py-12 pb-24">
       <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
         Want to track your efforts?
       </h2>
       <div class="w-full mb-4">
         <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
       </div>
-      <h3 class="my-4 text-3xl leading-tight">
+      <h3 class="my-4 text-3xl leading-tight pb-12">
         Connect with Strava, and Total Caliber will handle the rest.
       </h3>
-      <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+      <Link :href="route('register')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
         Create Account
-      </button>
+      </Link>
     </section>
     <!--Footer-->
     <footer v-if="false" class="bg-white">
