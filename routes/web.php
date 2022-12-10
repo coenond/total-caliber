@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserGoalController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -55,6 +56,7 @@ Route::get('health', HealthCheckResultsController::class);
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
+    Route::get('/profile', [ProfileController::class, 'renderPage'])->name('dashboard.profile');
     Route::get('/goals', [UserGoalController::class, 'index'])->name('dashboard.goals');
     Route::post('/goals', [UserGoalController::class, 'store'])->name('dashboard.goals.store');
     Route::post('/goals/strava-description', [UserGoalController::class, 'storeStravaDescription'])->name('dashboard.goals.storeStravaDescription');
