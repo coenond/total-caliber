@@ -11,6 +11,24 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 Route::get('/', function () {
     $faq1 = [
         [
+            'q' => 'When will the Strava description of my activity be updated?',
+            'a' => 'We only add the Total Caliber report to newly created activities. This means that it will not update the description of activities in the past.'
+        ],
+        [
+            'q' => 'My totals calculation is wrong.',
+            'a' => 'It could be that not all of your activities are synced between Strava and Total Caliber. Hit the "Sync my activities" button on the "My Activities page" to solve this. It could also be that you didn\'t give Total Caliber permission to access your Strava private activities. We cannot calculate that if that is the case.'
+        ],
+        [
+            'q' => 'Can I set multiple goals?',
+            'a' => 'Currently it\'s only possible to test one goal.'
+        ],
+        [
+            'q' => 'The Total Caliber report is not showing in my new activities.',
+            'a' => 'Reports only get added to your Strava Activities when you\'ve set a goal, and if the day of you activity falls inside the start and end date of your goal.'
+        ]
+    ];
+    $faq2 = [
+        [
             'q' => 'What activity data does Total Caliber store from me?',
             'a' => 'We store the following fields: title, distance, moving time, elevation gain, start_date, timezone, calories burned, indoor trainer (y/n), commute (y/n), manual (y/n).'
         ],
@@ -29,7 +47,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'faq1' => $faq1,
-        'faq2' => $faq1,
+        'faq2' => $faq2,
     ]);
 });
 
