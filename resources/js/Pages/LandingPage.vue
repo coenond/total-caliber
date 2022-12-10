@@ -9,6 +9,7 @@ const props = defineProps({
     faq1: Array,
     faq2: Array,
 })
+
 var scrollpos = window.scrollY;
 var header = document.getElementById("header");
 var navcontent = document.getElementById("nav-content");
@@ -73,7 +74,8 @@ if (scrollpos > 10) {
           </a>
         </div>
         <div class="block lg:hidden pr-4">
-          <button id="nav-toggle" class="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+          <Link :href="route('login')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Log in</Link>
+          <button v-if="false" id="nav-toggle" class="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -107,19 +109,21 @@ if (scrollpos > 10) {
     <div class="pt-24">
       <div class="container px-3 mx-auto flex md:flex-row justify-center tracking-wide">
         <!--Left Col-->
-        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+        <div class="flex flex-col w-full md:w-3/5 justify-center items-start text-center md:text-left lg:pr-12">
           <!-- <p class="tracking-loose w-full">Make every effort count</p> -->
+          <div>
           <img class="w-[220px] ml-[-8px]" src="images/pwrdBy_strava_horiz_gray.svg" />
+          </div>
           <h1 class="my-4 text-5xl font-bold leading-tight">
             Effortlessly tracking progress towards your <span class="underline">goals</span>
           </h1>
           <p class="leading-normal text-2xl mb-8">
             We all deserve a reminder of how far we’ve come
           </p>
-          <Link v-if="canRegister" :href="route('register')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Create Account</Link>
+          <Link v-if="canRegister" :href="route('register')" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-6 mb-24 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Create Account</Link>
         </div>
         <!--Mid Col-->
-        <div class="md:w-1/5 py-6"></div>
+        <!-- <div class="md:w-1/5 py-6"></div> -->
         <!--Right Col-->
         <div class="md:w-2/5 py-6 text-center align-right">
           <!-- <img class="w-full md:w-4/5 z-50" src="images/hero.png" /> -->
@@ -175,7 +179,7 @@ if (scrollpos > 10) {
           </div>
         </div>
         <div class="flex flex-wrap flex-col-reverse sm:flex-row">
-          <div class="w-full sm:w-1/2 p-6">
+          <div class="w-full sm:w-1/2 p-6 mt-[-100px] sm:mt-0">
             <img class="w-5/6 sm:h-128 mx-auto" src="images/Swim-01.svg" />
           </div>
           <div class="w-full sm:w-1/2 p-6 mt-6 lg:pt-[100px]">
