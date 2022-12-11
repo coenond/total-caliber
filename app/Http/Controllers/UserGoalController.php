@@ -28,7 +28,7 @@ class UserGoalController extends Controller
 
             'userStravaDescription' => $userStravaDescription,
 
-            'sportTypes' => StravaSportTypeEnum::supportedForGoals()
+            'sportTypeOptions' => StravaSportTypeEnum::supportedForGoals()
         ]);
     }
 

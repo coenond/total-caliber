@@ -12,7 +12,7 @@ const props = defineProps({
     startReadable: { type: String },
     end: { type: String },
     endReadable: { type: String },
-    sportTypes: { type: Array, required: true },
+    sportTypeOptions: { type: Array, required: true },
     userStravaDescription: { type: Object, required: false },
 });
 
@@ -64,7 +64,7 @@ const submit = () => {
                         <p>
                             Set your goals to track your efforts.
                         </p>
-                        <GoalInputForm :sport-types="props.sportTypes" />
+                        <GoalInputForm :sport-types="props.sportTypeOptions" />
                     </div>
                 </div>
             </div>
