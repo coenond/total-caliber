@@ -1,17 +1,34 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
+const showNotification = ref(false);
+
+const position = computed(() => {
+    return showNotification.value ? 'left-0' : '-left-[100%]';
+});
+
+watch(() => usePage().props.value.notification.message, () => {
+    showNotification.value = true;
+    setTimeout(() => showNotification.value = false, 5000);
+});
 </script>
 
 <template>
     <div>
+        <div :class="position" class="transition-all fixed bottom-8 mx-8 flex p-4 bg-green-300 bg-opacity-80 rounded-lg lg:max-w-[400px] mx-auto py-6 px-4 sm:px-6 lg:px-8 lg:mt-4" role="alert">
+            <svg aria-hidden="true" class="relative flex-shrink-0 w-5 h-5 text-green-700 dark:text-green-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+            <span class="sr-only">Info</span>
+            <div class="ml-3 text-m text-green-800">
+                <strong>{{ $page.props.notification.message }}</strong>
+            </div>
+        </div>
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
@@ -58,6 +75,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <DropdownLink :href="route('dashboard.profile')" as="button">
+                                            My Profile
+                                        </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
@@ -100,6 +120,9 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
+                            <ResponsiveNavLink :href="route('dashboard.profile')" as="button">
+                                My Profile
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>
@@ -114,7 +137,6 @@ const showingNavigationDropdown = ref(false);
                     <slot name="header" />
                 </div>
             </header>
-
             <!-- Page Content -->
             <main>
                 <slot />
