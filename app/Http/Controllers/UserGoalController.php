@@ -36,8 +36,7 @@ class UserGoalController extends Controller
     {
         $user = $req->user();
         // @todo: Move to service
-        $userGoal = UserGoal::create([
-            'user_id' => $user->id,
+        $userGoal = UserGoal::updateOrCreate([ 'user_id' => $user->id ], [
             'name' => $req->name(),
             'start' => $req->start()->toDateString(),
             'end' => $req->end()->toDateString()
@@ -58,6 +57,10 @@ class UserGoalController extends Controller
             'month_stats' => $req->showMonthStats()
         ]);
 
-        return Redirect::route('dashboard.goals');
+        $message = $req->enabled()
+            ? 'Strava description settings saved.'
+            : 'Strava description is disabled.';
+
+        return Redirect::route('dashboard.goals')->with('message', $message);
     }
 }
