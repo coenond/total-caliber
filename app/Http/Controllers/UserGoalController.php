@@ -16,7 +16,7 @@ class UserGoalController extends Controller
     public function index(Request $req)
     {
         $user = $req->user();
-        $userGoal = UserGoal::whereUserId($user->id)->first();
+        $userGoal = UserGoal::whereUserId($user->id)->with('sportTypes')->first();
         $userStravaDescription = UserStravaDescription::whereUserId($user->id)->first();
         return Inertia::render('UserGoalOverview', [
             'hasGoal' => !empty($userGoal),
@@ -25,6 +25,7 @@ class UserGoalController extends Controller
             'startReadable' => $userGoal->start->toFormattedDateString(),
             'end' => $userGoal->end->toDateString(),
             'endReadable' => $userGoal->end->toFormattedDateString(),
+            'sportTypes' => $userGoal->sportTypes->pluck('type'),
 
             'userStravaDescription' => $userStravaDescription,
 
