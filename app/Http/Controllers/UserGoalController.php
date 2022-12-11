@@ -44,7 +44,11 @@ class UserGoalController extends Controller
         ]);
         $userGoal->sportTypes()->sync($req->selectedSportTypes());
 
-        return Redirect::route('dashboard.goals');
+        $message = $userGoal->create_at === $userGoal->updated_at
+            ? 'Your goal is created.'
+            : 'Goal is updated.';
+
+        return Redirect::route('dashboard.goals')->with('message', $message);
     }
 
     public function storeStravaDescription(StoreUserStravaDescriptionRequest $req)
