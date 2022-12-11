@@ -18,6 +18,12 @@ const props = defineProps({
     userStravaDescription: { type: Object, required: false },
 });
 
+const goalSportTypeForm = useForm({
+    goalTitle: props.name || '',
+    goalStart: props.start || '',
+    goalEnd: props.end || '',
+    selectedSportTypes: props.sportTypes || [],
+});
 const stravaDescriptionForm = useForm({
     enabled: props.userStravaDescription?.enabled || false,
     showTotals: props.userStravaDescription?.totals || false,
@@ -32,17 +38,24 @@ const toggleStravaDescription = () => {
     }
 
 };
-const toggle = (key) => {
+const toggleSportTypes = (key) => {
+    goalSportTypeForm.selectedSportTypes.includes(key)
+        ? goalSportTypeForm.selectedSportTypes = goalSportTypeForm.selectedSportTypes.filter((t) => t !== key)
+        : goalSportTypeForm.selectedSportTypes.push(key);
+};
+const toggleDescriptionKey = (key) => {
     stravaDescriptionForm[key] = !stravaDescriptionForm[key]
 };
 const hasSportType = (type) => {
-    return usePage().props.value.sportTypes.includes(type);
+    return goalSportTypeForm.selectedSportTypes.includes(type);
 };
 
-const submit = () => {
+const submitGoalUpdate = () => {
+    goalSportTypeForm.post('/dashboard/goals');
+};
+const submitStravaDescription = () => {
     stravaDescriptionForm.post('/dashboard/goals/strava-description');
 };
-
 </script>
 
 <template>
@@ -67,10 +80,13 @@ const submit = () => {
                                 <p>On <strong>{{ props.startReadable }}</strong> you've started your training.</p>
 
                                 <p class="font-bold pt-6 pb-4">Sport types that contribute towards {{ props.name }}:</p>
-                                <BadgeButton v-for="sportType in props.sportTypeOptions" :key="sportType" class="border-b" :type="sportType" :selected="hasSportType(sportType)" />
+                                <BadgeButton v-for="sportType in props.sportTypeOptions" :key="sportType" class="border-b" :type="sportType" :selected="hasSportType(sportType)" @click="toggleSportTypes(sportType)" />
                             </div>
                             <div>
                                 <CountDownClock :date="props.end" />
+                                <PrimaryButton v-if="goalSportTypeForm.isDirty" @click="submitGoalUpdate()" :class="{ 'opacity-25': goalSportTypeForm.processing }">
+                                    Save
+                                </PrimaryButton>
                             </div>
                         </div>
 
@@ -98,12 +114,12 @@ const submit = () => {
                     <div v-if="stravaDescriptionForm.enabled" class="flex justify-between">
                         <div class="mb-5">
                             <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
-                            <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggle('showTotals')" />
-                            <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggle('showWeekStats')" />
-                            <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggle('showMonthStats')" />
+                            <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggleDescriptionKey('showTotals')" />
+                            <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggleDescriptionKey('showWeekStats')" />
+                            <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggleDescriptionKey('showMonthStats')" />
                         </div>
                         <div>
-                            <PrimaryButton v-if="stravaDescriptionForm.isDirty" @click="submit()" :class="{ 'opacity-25': stravaDescriptionForm.processing }">
+                            <PrimaryButton v-if="stravaDescriptionForm.isDirty" @click="submitStravaDescription()" :class="{ 'opacity-25': stravaDescriptionForm.processing }">
                                 Save
                             </PrimaryButton>
                         </div>
