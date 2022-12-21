@@ -36,7 +36,7 @@ class ActivityController extends Controller
         $user = $req->user();
         $stravaJobModel = StravaSyncJob::create(['user_id' => $user->id]);
 
-        SyncStravaActivities::dispatch($user, $stravaJobModel, 1, Carbon::now()->subYears(5), Carbon::now());
+        SyncStravaActivities::dispatch($user, $stravaJobModel, 1, Carbon::now()->subYears(10), Carbon::now());
         return Redirect::route('my-activities');
     }
 }
