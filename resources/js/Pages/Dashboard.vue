@@ -18,6 +18,7 @@ const props = defineProps({
 const weekChartOptions = computed(() => {
     return {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top'
@@ -93,6 +94,7 @@ const toggleYearTotals = (type) => showWeekChartIn.value = type;
                     </div>
                     <Bar
                         id="weekly"
+                        class="max-h-[300px] sm:max-h-[400px] md:max-h-[600px]"
                         :options="weekChartOptions"
                         :data="weekChartDataComputed"
                     />
