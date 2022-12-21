@@ -3,47 +3,54 @@
 namespace App\Services;
 
 use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 
 class DataQueryService
 {
     public function getYearOverViewByWeek(User $user): array
     {
-       $data = DB::table('strava_activities as sa')
-        ->join('users as u', 'u.id', '=', 'sa.user_id')
-        ->join('strava_sport_types as sst', 'sst.id', '=', 'sa.type_id')
-        ->select(DB::raw('MONTHNAME(sa.start_date) as month'), 'sst.type', DB::raw('SUM(sa.distance) as distance'))
-        ->where('sa.start_date', '>', '2022-04-01')
-        ->whereIn('sst.type', ['Ride', 'Run'])
-        ->groupBy('sst.type', 'month')
-        ->get()
-        ->toArray();
+        $lastYear = Carbon::now()->subMonths(11)->startOfMonth()->toDateString();
 
-        $monthData = [
-            'January' => 0,  
-            'February' => 0, 
-            'March' => 0,    
-            'April' => 0,    
-            'May' => 0,      
-            'June' => 0,     
-            'July' => 0,     
-            'August' => 0,   
-            'September' => 0,
-            'October' => 0,  
-            'November' => 0, 
-            'December' => 0, 
-        ];
+        $data = DB::table('strava_activities as sa')
+            ->join('users as u', 'u.id', '=', 'sa.user_id')
+            ->join('strava_sport_types as sst', 'sst.id', '=', 'sa.type_id')
+            ->select(
+                DB::raw('MONTHNAME(sa.start_date) as month'),
+                'sst.type',
+                DB::raw('SUM(sa.distance) / 1000 as totalDistance'),
+                DB::raw('SUM(sa.moving_time) as totalTime')
+            )
+            ->where('sa.start_date', '>', $lastYear)
+            ->where('sa.user_id', '=', $user->id)
+            ->groupBy('sst.type', 'month')
+            ->get()
+            ->toArray();
 
-        $aggregate = [
-            'Ride' => ['data' => $monthData],
-            'Run' => ['data' => $monthData],
-        ];
+        $oneYearPeriod = CarbonPeriod::create($lastYear, '1 month', Carbon::now());
+        $monthData = array_map(fn (Carbon $t) => $t->format('F'), $oneYearPeriod->toArray());
 
+        $monthKeys = array_flip($monthData);
+
+        $aggregateInTime = [];
+        $aggregateInDistance = [];
+
+        // prepare the aggregated data
         foreach ($data as $record) {
-            // $aggregate[$record->month]['data'][$record->type] = $record->distance;
-            $aggregate[$record->type]['data'][$record->month] = $record->distance;
+            $aggregateInTime[$record->type] = ['label' => $record->type, 'data' => array_map(fn () => 0, $monthKeys)];
+            $aggregateInDistance[$record->type] = ['label' => $record->type, 'data' => array_map(fn () => 0, $monthKeys)];
         }
 
-        return $aggregate;
+        foreach ($data as $record) {
+            $aggregateInTime[$record->type]['data'][$record->month] = $record->totalTime;
+            $aggregateInDistance[$record->type]['data'][$record->month] = $record->totalDistance;
+        }
+
+        return [
+            'data_in_time' => $aggregateInTime,
+            'data_in_distance' => $aggregateInDistance,
+            'labels' => array_values($monthData)
+        ];
     }
 }
