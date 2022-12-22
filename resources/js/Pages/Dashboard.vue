@@ -1,55 +1,18 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
 import StravaBtn from '@/Components/StravaBtn.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
-import { Bar } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors } from 'chart.js';
-import BadgeButton from '@/Components/BadgeButton.vue';
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors);
+import YearByWeekChart from '@/Charts/YearByWeekChart.vue';
 
 const props = defineProps({
     weekDataChartDataInTime: { type: Array, required: false },
     weekDataChartDataInDistance: { type: Array, required: false },
     weekDataChartLabels: { type: Array, required: false },
-});
 
-const weekChartOptions = computed(() => {
-    return {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                ticks: {
-                    // Include a dollar sign in the ticks
-                    callback: function(value, index, ticks) {
-                        return showWeekChartIn.value === 'distance'
-                            ? value + 'km'
-                            : Math.floor(value / 60) + 'min';
-                    }
-                }
-            }
-        }
-    };
+    yearOverviewDataChartDataInTime: { type: Array, required: false },
+    yearOverviewDataChartDataInDistance: { type: Array, required: false },
+    yearOverviewDataChartLabels: { type: Array, required: false },
 });
-
-const showWeekChartIn = ref('distance');
-const weekChartDataComputed = computed(() => {
-    const data = showWeekChartIn.value === 'distance'
-        ? props.weekDataChartDataInDistance
-        : props.weekDataChartDataInTime;
-    return {
-        labels: props.weekDataChartLabels,
-        datasets: data
-    };
-});
-const toggleYearTotals = (type) => showWeekChartIn.value = type;
 </script>
 
 <template>
@@ -86,17 +49,11 @@ const toggleYearTotals = (type) => showWeekChartIn.value = type;
                     <h2 class="text-xl pb-10">
                        Your year overview per month
                     </h2>
-                    
-                    <div class="mb-5">
-                        <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Show chart in: </label>
-                        <BadgeButton class="border-b mt-2" type="Distance" :selected="showWeekChartIn === 'distance'" @click="toggleYearTotals('distance')" />
-                        <BadgeButton class="border-b mt-2" type="Time" :selected="showWeekChartIn === 'time'" @click="toggleYearTotals('time')" />
-                    </div>
-                    <Bar
-                        id="weekly"
-                        class="max-h-[300px] sm:max-h-[400px] md:max-h-[600px]"
-                        :options="weekChartOptions"
-                        :data="weekChartDataComputed"
+
+                    <YearByWeekChart 
+                        :dataInTime="weekDataChartDataInTime"
+                        :dataInDistance="weekDataChartDataInDistance"
+                        :labels="weekDataChartLabels"
                     />
                 </div>
             </div>
