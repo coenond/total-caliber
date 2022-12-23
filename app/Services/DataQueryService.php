@@ -53,4 +53,72 @@ class DataQueryService
             'labels' => array_values($monthData)
         ];
     }
+
+    public function getYearProgress(User $user)
+    {
+        $data = DB::table('strava_activities')
+            ->select(
+                'sst.type',
+                DB::raw('SUBSTRING(start_date, 1, 10) as onDay'),
+                DB::raw('SUM(distance) / 1000 as totalDistance'),
+                DB::raw('SUM(moving_time) as totalTime')
+            )
+            ->join('strava_sport_types as sst', 'sst.id', '=', 'strava_activities.type_id')
+            ->where('user_id', '=', $user->id)
+            ->where('sst.type', '=', 'Ride')
+            ->groupBy('sst.type', 'onDay')
+            ->orderBy('onDay')
+            ->get()
+            ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
+
+        // When expanding all sport types
+        $sportTypes = ['Ride'];
+        
+        $first = Carbon::createFromDate($data->first()->onDay)->startOfYear();
+        $last = Carbon::createFromDate($data->last()->onDay)->startOfYear();
+        $allYearsPeriod = CarbonPeriod::create($first, '1 year', $last);
+
+        $aggregateInTime = [];
+        $aggregateInDistance = [];
+
+        foreach ($allYearsPeriod as $year) {
+            $allDaysInYear = CarbonPeriod::create($year->startOfYear(), '1 day', 365);
+
+            $aggregateInTime[$year->year] = [
+                'label' => $year->year,
+                'pointRadius' => 0,
+                'data' => array_fill(0, 365, 0)
+            ];
+            $aggregateInDistance[$year->year] = [
+                'label' => $year->year,
+                'pointRadius' => 0,
+                'data' => array_fill(0, 365, 0)
+            ];
+
+            $totalTime = 0;
+            $totalDistance = 0;
+
+            foreach ($allDaysInYear as $i => $day) {
+                $dayStr = $day->toDateString();
+
+                // When expanding all sport types
+                $key = 'Ride' . '_' . $dayStr;
+
+                if ($data->has($key)) {  
+                    $totalTime += $data[$key]->totalTime;
+                    $totalDistance += $data[$key]->totalDistance;   
+                }
+
+                $aggregateInTime[$year->year]['data'][$i] = $totalTime;
+                $aggregateInDistance[$year->year]['data'][$i] = $totalDistance;
+            }
+            info($aggregateInTime[$year->year]);
+        }
+
+        return [
+            'labels' => array_keys(array_fill(1, 365, 0)),
+            'data_in_distance' => $aggregateInDistance,
+            'data_in_time' => $aggregateInTime
+        ];
+    }
 }
