@@ -32,9 +32,15 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
             'userHasStravaAuth' => $userHasStravaAuth,
+
             'weekDataChartDataInTime' => array_values($weekDataChart['data_in_time']),
             'weekDataChartDataInDistance' => array_values($weekDataChart['data_in_distance']),
             'weekDataChartLabels' => array_values($weekDataChart['labels']),
+
+            'yearOverviewDataChartDataInTime' => array_values($yearDataChart['data_in_time']),
+            'yearOverviewDataChartDataInDistance' => array_values($yearDataChart['data_in_distance']),
+            'yearOverviewDataChartLabels' => array_values($yearDataChart['labels']),
+
             'success_message' => session()->get('success_message')
         ]);
     }
