@@ -25,6 +25,9 @@ class DashboardController extends Controller
         $weekDataChart = $userHasStravaAuth
             ? $this->dataQueryService->getYearOverViewByWeek($user)
             : null;
+        $yearDataChart = $userHasStravaAuth
+            ? $this->dataQueryService->getYearProgress($user)
+            : null;
 
         return Inertia::render('Dashboard', [
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
