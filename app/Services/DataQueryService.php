@@ -112,7 +112,6 @@ class DataQueryService
                 $aggregateInTime[$year->year]['data'][$i] = $totalTime;
                 $aggregateInDistance[$year->year]['data'][$i] = $totalDistance;
             }
-            info($aggregateInTime[$year->year]);
         }
 
         return [
