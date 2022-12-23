@@ -25,9 +25,14 @@ const chartOptions = computed(() => {
             y: {
                 ticks: {
                     callback: function(value, index, ticks) {
-                        return showChartIn.value === 'distance'
-                            ? value + 'km'
-                            : Math.floor(value / 60) + 'min';
+                        if (showChartIn.value === 'time') {
+                            const minutes = Math.floor(value / 60);
+                            if (minutes < 60) {
+                                return minutes + 'min';
+                            }
+                            return Math.floor(minutes / 60) + 'h';
+                        }
+                        return value.toLocaleString("nl-NL", { style: "decimal" }) + ' km';
                     }
                 }
             }
