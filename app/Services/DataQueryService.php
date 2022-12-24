@@ -73,7 +73,8 @@ class DataQueryService
             ->groupBy('sst.type', 'onDay')
             ->orderBy('onDay')
             ->get()
-            ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
+            ->keyBy(fn ($r) => 'Ride_' . $r->onDay);
+            // ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
 
         if ($data->isEmpty()) {
             return null;
@@ -112,9 +113,9 @@ class DataQueryService
                 // When expanding all sport types
                 $key = 'Ride' . '_' . $dayStr;
 
-                if ($data->has($key)) {  
+                if ($data->has($key)) {
                     $totalTime += $data[$key]->totalTime;
-                    $totalDistance += $data[$key]->totalDistance;   
+                    $totalDistance += $data[$key]->totalDistance;
                 }
 
                 $aggregateInTime[$year->year]['data'][$i] = $totalTime;
