@@ -75,7 +75,7 @@ class DataQueryService
             ->get()
             ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
 
-        if ($data->empty()) {
+        if ($data->isEmpty()) {
             return null;
         }
 
