@@ -69,7 +69,7 @@ class DataQueryService
             )
             ->join('strava_sport_types as sst', 'sst.id', '=', 'strava_activities.type_id')
             ->where('user_id', '=', $user->id)
-            ->where('sst.type', '=', 'Ride')
+            ->whereIn('sst.type', ['Ride', 'VirtualRide', 'MountainBikeRide'])
             ->groupBy('sst.type', 'onDay')
             ->orderBy('onDay')
             ->get()
