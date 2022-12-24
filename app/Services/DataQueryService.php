@@ -28,7 +28,7 @@ class DataQueryService
             ->get()
             ->toArray();
 
-        if ($data->empty()) {
+        if (empty($data)) {
             return null;
         }
 
