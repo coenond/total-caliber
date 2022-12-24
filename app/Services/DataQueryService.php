@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class DataQueryService
 {
-    public function getYearOverViewByWeek(User $user): array
+    public function getYearOverViewByWeek(User $user): ?array
     {
         $lastYear = Carbon::now()->subMonths(11)->startOfMonth()->toDateString();
 
@@ -27,6 +27,10 @@ class DataQueryService
             ->groupBy('sst.type', 'month')
             ->get()
             ->toArray();
+
+        if (empty($data)) {
+            return null;
+        }
 
         $oneYearPeriod = CarbonPeriod::create($lastYear, '1 month', Carbon::now());
         $monthData = array_map(fn (Carbon $t) => $t->format('F'), $oneYearPeriod->toArray());
@@ -71,9 +75,13 @@ class DataQueryService
             ->get()
             ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
 
+        if (empty($data)) {
+            return null;
+        }
+
         // When expanding all sport types
         $sportTypes = ['Ride'];
-        
+
         $first = Carbon::createFromDate($data->first()->onDay)->startOfYear();
         $last = Carbon::createFromDate($data->last()->onDay)->startOfYear();
         $allYearsPeriod = CarbonPeriod::create($first, '1 year', $last);
