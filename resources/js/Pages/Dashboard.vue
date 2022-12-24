@@ -45,27 +45,27 @@ const props = defineProps({
                     </div>
                 </div>
             </div>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
+            <div v-if="weekDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <h2 class="text-xl pb-10">
                        Your year overview per month
                     </h2>
 
-                    <YearByWeekChart 
+                    <YearByWeekChart
                         :dataInTime="weekDataChartDataInTime"
                         :dataInDistance="weekDataChartDataInDistance"
                         :labels="weekDataChartLabels"
                     />
                 </div>
             </div>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
+            <div v-if="yearOverviewDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <h2 class="text-xl">
                        Your year progress
                     </h2>
                     <p class="pb-10"><i>Currently for type "Ride" only.</i></p>
 
-                    <YearsProgressChart 
+                    <YearsProgressChart
                         :dataInTime="yearOverviewDataChartDataInTime"
                         :dataInDistance="yearOverviewDataChartDataInDistance"
                         :labels="yearOverviewDataChartLabels"
