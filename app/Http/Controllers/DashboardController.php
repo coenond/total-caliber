@@ -33,13 +33,13 @@ class DashboardController extends Controller
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
             'userHasStravaAuth' => $userHasStravaAuth,
 
-            'weekDataChartDataInTime' => array_values($weekDataChart['data_in_time']),
-            'weekDataChartDataInDistance' => array_values($weekDataChart['data_in_distance']),
-            'weekDataChartLabels' => array_values($weekDataChart['labels']),
+            'weekDataChartDataInTime' => $weekDataChart ? array_values($weekDataChart['data_in_time']) : null,
+            'weekDataChartDataInDistance' => $weekDataChart ? array_values($weekDataChart['data_in_distance']) : null,
+            'weekDataChartLabels' => $weekDataChart ? array_values($weekDataChart['labels']) : null,
 
-            'yearOverviewDataChartDataInTime' => array_values($yearDataChart['data_in_time']),
-            'yearOverviewDataChartDataInDistance' => array_values($yearDataChart['data_in_distance']),
-            'yearOverviewDataChartLabels' => array_values($yearDataChart['labels']),
+            'yearOverviewDataChartDataInTime' => $yearDataChart ? array_values($yearDataChart['data_in_time']) : null,
+            'yearOverviewDataChartDataInDistance' => $yearDataChart ? array_values($yearDataChart['data_in_distance']) : null,
+            'yearOverviewDataChartLabels' => $yearDataChart ? array_values($yearDataChart['labels']) : null,
 
             'success_message' => session()->get('success_message')
         ]);
