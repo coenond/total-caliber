@@ -21,6 +21,25 @@ return new class extends Migration
             'Ride',
             'VirtualRide'
         ])->update(['group' => 'Ride']);
+
+        StravaSportType::whereIn('type', [
+            'Run',
+            'TrailRun',
+            'VirtualRun',
+        ])->update(['group' => 'Run']);
+
+        StravaSportType::whereIn('type', [
+            'AlpineSki',
+            'BackcountrySki',
+            'NordicSki',
+            'RollerSki',
+        ])->update(['group' => 'Ski']);
+
+        $others =  StravaSportType::whereNull('group')->get();
+        foreach ($others as $type) {
+            $type->group = $type->type;
+            $type->save();
+        }
     }
 
     public function down()
