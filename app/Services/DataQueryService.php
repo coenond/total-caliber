@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class DataQueryService
 {
-    public function getYearOverViewByWeek(User $user): array
+    public function getYearOverViewByWeek(User $user): ?array
     {
         $lastYear = Carbon::now()->subMonths(11)->startOfMonth()->toDateString();
 
@@ -27,6 +27,10 @@ class DataQueryService
             ->groupBy('sst.type', 'month')
             ->get()
             ->toArray();
+
+        if (empty($data)) {
+            return null;
+        }
 
         $oneYearPeriod = CarbonPeriod::create($lastYear, '1 month', Carbon::now());
         $monthData = array_map(fn (Carbon $t) => $t->format('F'), $oneYearPeriod->toArray());
@@ -65,15 +69,20 @@ class DataQueryService
             )
             ->join('strava_sport_types as sst', 'sst.id', '=', 'strava_activities.type_id')
             ->where('user_id', '=', $user->id)
-            ->where('sst.type', '=', 'Ride')
+            ->whereIn('sst.type', ['Ride', 'VirtualRide', 'MountainBikeRide'])
             ->groupBy('sst.type', 'onDay')
             ->orderBy('onDay')
             ->get()
-            ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
+            ->keyBy(fn ($r) => 'Ride_' . $r->onDay);
+            // ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
+
+        if ($data->isEmpty()) {
+            return null;
+        }
 
         // When expanding all sport types
         $sportTypes = ['Ride'];
-        
+
         $first = Carbon::createFromDate($data->first()->onDay)->startOfYear();
         $last = Carbon::createFromDate($data->last()->onDay)->startOfYear();
         $allYearsPeriod = CarbonPeriod::create($first, '1 year', $last);
@@ -104,9 +113,9 @@ class DataQueryService
                 // When expanding all sport types
                 $key = 'Ride' . '_' . $dayStr;
 
-                if ($data->has($key)) {  
+                if ($data->has($key)) {
                     $totalTime += $data[$key]->totalTime;
-                    $totalDistance += $data[$key]->totalDistance;   
+                    $totalDistance += $data[$key]->totalDistance;
                 }
 
                 $aggregateInTime[$year->year]['data'][$i] = $totalTime;
