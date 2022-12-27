@@ -7,8 +7,8 @@ import BadgeButton from '@/Components/BadgeButton.vue';
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, Colors, PointElement);
 
 const props = defineProps({
-    dataInTime: { type: Array, required: false },
-    dataInDistance: { type: Array, required: false },
+    dataInTime: { type: Object, required: false },
+    dataInDistance: { type: Object, required: false },
     labels: { type: Array, required: false },
 });
 
@@ -50,21 +50,30 @@ const chartOptions = computed(() => {
     };
 });
 
+const sportTypes = ref(Object.keys(props.dataInDistance));
+const showForActivity = ref(Object.keys(props.dataInDistance).includes('Ride') ? 'Ride' : Object.keys(props.dataInDistance)[0]);
+
 const showChartIn = ref('distance');
 const dataComputed = computed(() => {
     const data = showChartIn.value === 'distance'
-        ? props.dataInDistance
-        : props.dataInTime;
+        ? Object.values(props.dataInDistance[showForActivity.value])
+        : Object.values(props.dataInTime[showForActivity.value]);
+    console.log(data);
     return {
         labels: props.labels,
         datasets: data
     };
 });
 const toggle = (type) => showChartIn.value = type;
+const toggleSportTypes = (type) => showForActivity.value = type;
 </script>
 
 <template>
     <div>
+        <div class="mb-5">
+            <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Show chart in: </label>
+            <BadgeButton v-for="sportType in sportTypes" :key="sportType" class="border-b" :type="sportType" :selected="showForActivity === sportType" @click="toggleSportTypes(sportType)" />
+        </div>
         <div class="mb-5">
             <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Show chart in: </label>
             <BadgeButton class="border-b mt-2" type="Distance" :selected="showChartIn === 'distance'" @click="toggle('distance')" />
