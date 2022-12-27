@@ -39,9 +39,10 @@ const chartOptions = computed(() => {
             x: {
                 ticks: {
                     callback: function(value, index, ticks) {
-                        const date = new Date();
-                        date.setFullYear(new Date().getFullYear());
-                        date.setDate(value);
+                        const year = new Date().getFullYear();
+                        const date = new Date(year, 0, 1);
+                        date.setDate(value+1);
+                        
                         return date.toLocaleString("en-US", { month: "long", day: "numeric" });
                     }
                 }
