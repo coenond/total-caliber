@@ -95,18 +95,19 @@ class DataQueryService
                 $aggregateInTime[$type][$year->year] = [
                     'label' => $year->year,
                     'pointRadius' => 0,
-                    'data' => array_fill(0, 365, 0)
                 ];
                 $aggregateInDistance[$type][$year->year] = [
                     'label' => $year->year,
                     'pointRadius' => 0,
-                    'data' => array_fill(0, 365, 0)
                 ];
 
                 $totalTime = 0;
                 $totalDistance = 0;
 
                 foreach ($allDaysInYear as $i => $day) {
+                    if (!$day->isPast()) {
+                        continue;
+                    }
                     $dayStr = $day->toDateString();
 
                     // When expanding all sport types
