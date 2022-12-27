@@ -59,7 +59,6 @@ const dataComputed = computed(() => {
     const data = showChartIn.value === 'distance'
         ? Object.values(props.dataInDistance[showForActivity.value])
         : Object.values(props.dataInTime[showForActivity.value]);
-    console.log(data);
     return {
         labels: props.labels,
         datasets: data
