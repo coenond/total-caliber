@@ -37,8 +37,8 @@ class DashboardController extends Controller
             'weekDataChartDataInDistance' => $weekDataChart ? array_values($weekDataChart['data_in_distance']) : null,
             'weekDataChartLabels' => $weekDataChart ? array_values($weekDataChart['labels']) : null,
 
-            'yearOverviewDataChartDataInTime' => $yearDataChart ? array_values($yearDataChart['data_in_time']) : null,
-            'yearOverviewDataChartDataInDistance' => $yearDataChart ? array_values($yearDataChart['data_in_distance']) : null,
+            'yearOverviewDataChartDataInTime' => $yearDataChart ? $yearDataChart['data_in_time'] : null,
+            'yearOverviewDataChartDataInDistance' => $yearDataChart ? $yearDataChart['data_in_distance'] : null,
             'yearOverviewDataChartLabels' => $yearDataChart ? array_values($yearDataChart['labels']) : null,
 
             'success_message' => session()->get('success_message')
