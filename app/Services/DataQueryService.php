@@ -62,26 +62,24 @@ class DataQueryService
     {
         $data = DB::table('strava_activities')
             ->select(
-                'sst.type',
+                'sst.group',
                 DB::raw('SUBSTRING(start_date, 1, 10) as onDay'),
                 DB::raw('SUM(distance) / 1000 as totalDistance'),
                 DB::raw('SUM(moving_time) as totalTime')
             )
             ->join('strava_sport_types as sst', 'sst.id', '=', 'strava_activities.type_id')
             ->where('user_id', '=', $user->id)
-            ->whereIn('sst.type', ['Ride', 'VirtualRide', 'MountainBikeRide'])
-            ->groupBy('sst.type', 'onDay')
+            ->groupBy('sst.group', 'onDay')
             ->orderBy('onDay')
             ->get()
-            ->keyBy(fn ($r) => 'Ride_' . $r->onDay);
-            // ->keyBy(fn ($r) => $r->type . '_' . $r->onDay);
+            ->keyBy(fn ($r) => $r->group . '_' . $r->onDay);
 
         if ($data->isEmpty()) {
             return null;
         }
 
         // When expanding all sport types
-        $sportTypes = ['Ride'];
+        $sportTypes = $data->unique('group')->pluck('group')->toArray();
 
         $first = Carbon::createFromDate($data->first()->onDay)->startOfYear();
         $last = Carbon::createFromDate($data->last()->onDay)->startOfYear();
@@ -90,43 +88,45 @@ class DataQueryService
         $aggregateInTime = [];
         $aggregateInDistance = [];
 
-        foreach ($allYearsPeriod as $year) {
-            $allDaysInYear = CarbonPeriod::create($year->startOfYear(), '1 day', 365);
+        foreach ($sportTypes as $type) {
+            foreach ($allYearsPeriod as $year) {
+                $allDaysInYear = CarbonPeriod::create($year->startOfYear(), '1 day', 365);
 
-            $aggregateInTime[$year->year] = [
-                'label' => $year->year,
-                'pointRadius' => 0,
-                'data' => array_fill(0, 365, 0)
-            ];
-            $aggregateInDistance[$year->year] = [
-                'label' => $year->year,
-                'pointRadius' => 0,
-                'data' => array_fill(0, 365, 0)
-            ];
+                $aggregateInTime[$type][$year->year] = [
+                    'label' => $year->year,
+                    'pointRadius' => 0,
+                    'data' => array_fill(0, 365, 0)
+                ];
+                $aggregateInDistance[$type][$year->year] = [
+                    'label' => $year->year,
+                    'pointRadius' => 0,
+                    'data' => array_fill(0, 365, 0)
+                ];
 
-            $totalTime = 0;
-            $totalDistance = 0;
+                $totalTime = 0;
+                $totalDistance = 0;
 
-            foreach ($allDaysInYear as $i => $day) {
-                $dayStr = $day->toDateString();
+                foreach ($allDaysInYear as $i => $day) {
+                    $dayStr = $day->toDateString();
 
-                // When expanding all sport types
-                $key = 'Ride' . '_' . $dayStr;
+                    // When expanding all sport types
+                    $key = $type . '_' . $dayStr;
+                    if ($data->has($key)) {
+                        $totalTime += $data[$key]->totalTime;
+                        $totalDistance += $data[$key]->totalDistance;
+                    }
 
-                if ($data->has($key)) {
-                    $totalTime += $data[$key]->totalTime;
-                    $totalDistance += $data[$key]->totalDistance;
+                    $aggregateInTime[$type][$year->year]['data'][$i] = $totalTime;
+                    $aggregateInDistance[$type][$year->year]['data'][$i] = $totalDistance;
                 }
-
-                $aggregateInTime[$year->year]['data'][$i] = $totalTime;
-                $aggregateInDistance[$year->year]['data'][$i] = $totalDistance;
             }
         }
 
         return [
             'labels' => array_keys(array_fill(1, 365, 0)),
             'data_in_distance' => $aggregateInDistance,
-            'data_in_time' => $aggregateInTime
+            'data_in_time' => $aggregateInTime,
+            'sport_types' => $sportTypes,
         ];
     }
 }
