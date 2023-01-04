@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { usePage } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
@@ -7,14 +7,18 @@ const props = defineProps({
 });
 
 const showNotification = ref(false);
-
 const position = computed(() => {
-    return showNotification.value ? 'left-0' : '-left-[100%]';
+    return showNotification.value ? 'bottom-8 md:left-0' : '-bottom-[20%] md:bottom-8 md:-left-[100%]';
 });
-
 watch(() => usePage().props.value.notification.message, () => {
     showNotification.value = true;
     setTimeout(() => showNotification.value = false, 5000);
+});
+onMounted(() => {
+    if (usePage().props.value.notification.message) {
+        showNotification.value = true;
+        setTimeout(() => showNotification.value = false, 5000)
+    }
 });
 </script>
 
