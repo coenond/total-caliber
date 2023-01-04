@@ -13,6 +13,11 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    padding: {
+        type: Boolean,
+        required: false,
+        default: true
+    }
 });
 
 const form = useForm({
@@ -42,37 +47,40 @@ const toggle = (type) => {
 
 </script>
 
-<template><div class="flex p-12">
-    <div class="w-full max-w-[550px]">
-        <form @submit.prevent="submit">
-            <div class="mb-5">
-                <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
-                    Give your goal a name
-                </label>
-                <TextInput
-                    v-model="form.goalTitle"
-                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    placeholder="Example: New York Marathon"
-                    required autofocus />
-            </div>
-            <div class="mb-5">
-                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When did you start training for this goal?</label>
-                <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" showNowButton nowButtonLabel="Today"/>
-            </div>
-            <div class="mb-5">
-                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">When is your Goal/Event</label>
-                <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" :minDate="new Date()" />
-            </div>
+<template>
+    <div :class="props.padding ? `flex p-12` : flex">
+        <div class="w-full max-w-[550px]">
+            <form @submit.prevent="submit">
+                <div class="mb-5">
+                    <label for="name" class="mb-3 block text-base font-medium text-[#07074D] font-bold">
+                        Give your goal a name
+                    </label>
+                    <TextInput
+                        v-model="form.goalTitle"
+                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                        placeholder="Example: New York Marathon"
+                        required autofocus />
+                </div>
+                <div class="mb-5">
+                    <label for="email" class="mb-3 block text-base font-medium text-[#07074D] font-bold">When did you start training for this goal?</label>
+                    <Datepicker v-model="form.goalStart" :enableTimePicker="false" :required="true" showNowButton nowButtonLabel="Today"/>
+                </div>
+                <div class="mb-5">
+                    <label for="email" class="mb-3 block text-base font-medium text-[#07074D] font-bold">When is your Goal/Event taking place?</label>
+                    <Datepicker v-model="form.goalEnd" :enableTimePicker="false" :required="true" :minDate="new Date()" />
+                </div>
 
-            <div class="mb-5">
-                <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
-                <BadgeButton v-for="sportType in props.sportTypes" :key="sportType" class="border-b" :type="sportType" :selected="isSelected(sportType)" @click="toggle(sportType)" />
-            </div>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Set Goal
-            </PrimaryButton>
-        </form>
-    </div>
+                <div class="mb-5">
+                    <label for="email" class="mb-3 block text-base font-medium text-[#07074D] font-bold">Select the sport types you want to include in your summaries</label>
+                    <BadgeButton v-for="sportType in props.sportTypes" :key="sportType" class="border-b" :type="sportType" :selected="isSelected(sportType)" @click="toggle(sportType)" />
+                </div>
+                <div class="flex justify-between  mt-12">
+                    <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                        Save Goal
+                    </PrimaryButton>
+                    <Link href="/onboarding/set-goal" class="underline ml-2 mt-2">skip</Link>
+                </div>
+            </form>
+        </div>
 </div>
 </template>
