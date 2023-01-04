@@ -17,14 +17,14 @@ class StravaAuthService
     ) { }
 
 
-    public function getAuthorizationUrl(): string
+    public function getAuthorizationUrl(bool $fromOnboarding): string
     {
         return self::stravaUrl . '/oauth/authorize?' . http_build_query([
             'client_id' => env('STRAVA_CLIENT_ID'),
             'response_type' => 'code',
             'approval_prompt' => 'force',
             'scope' => 'activity:read,activity:write,activity:read_all',
-            'redirect_uri' => url('/strava/authorize')
+            'redirect_uri' => $fromOnboarding ? url('/onboarding/step/2') : url('/strava/authorize')
         ]);
     }
 
@@ -77,6 +77,6 @@ class StravaAuthService
 
     public function userHasStravaAuth(User $user): bool
     {
-        return  StravaRefreshToken::whereUserId($user->id)->exists();
+        return StravaRefreshToken::whereUserId($user->id)->exists();
     }
 }
