@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserGoalController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,12 @@ Route::get('/', function () {
 });
 
 Route::get('health', HealthCheckResultsController::class);
+
+Route::prefix('onboarding')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [OnboardingController::class, 'index'])->name('onboarding');
+    Route::get('/set-goal', [OnboardingController::class, 'setGoal'])->name('onboarding.setGoal');
+    Route::post('/syncActivities', [OnboardingController::class, 'createSyncJob']);
+});
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
