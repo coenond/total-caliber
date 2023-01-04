@@ -30,7 +30,7 @@ class DashboardController extends Controller
             : null;
 
         return Inertia::render('Dashboard', [
-            'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(),
+            'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(false),
             'userHasStravaAuth' => $userHasStravaAuth,
 
             'weekDataChartDataInTime' => $weekDataChart ? array_values($weekDataChart['data_in_time']) : null,
