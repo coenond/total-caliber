@@ -5,6 +5,7 @@ import GoalInputForm from '@/Components/GoalInputForm.vue';
 
 const props = defineProps({
     sportTypeOptions: { type: Array, required: true },
+    userGoal: { type: Object, required: false },
 });
 </script>
 
@@ -23,7 +24,8 @@ const props = defineProps({
                 post-url="/onboarding/goal"
                 skip-url="/onboarding/final"
                 :sport-types="props.sportTypeOptions"
-                :padding="false"/>
+                :padding="false"
+                :user-goal="props.userGoal"/>
         </div>
     </WavyLayout>
 </template>
