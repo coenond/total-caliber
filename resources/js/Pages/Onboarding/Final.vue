@@ -1,12 +1,6 @@
 <script setup>
 import WavyLayout from '@/Layouts/WavyLayout.vue';
 import { Link } from '@inertiajs/inertia-vue3';
-import GoalInputForm from '@/Components/GoalInputForm.vue';
-
-const props = defineProps({
-    sportTypeOptions: { type: Array, required: true },
-    userGoal: { type: Object, required: false },
-});
 </script>
 
 <template>
