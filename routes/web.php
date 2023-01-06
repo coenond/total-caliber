@@ -57,7 +57,7 @@ Route::get('/', function () {
 Route::get('health', HealthCheckResultsController::class);
 
 Route::prefix('onboarding')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [OnboardingController::class, 'index'])->name('authorizedFromOnboarding');
+    Route::get('/', [OnboardingController::class, 'index'])->name('onboarding');
     Route::get('/strava/authorize', [StravaAuthorizeController::class, 'authStrava']);
     Route::get('/set-goal', [OnboardingController::class, 'setGoal'])->name('onboarding.setGoal');
     Route::post('/set-goal', [OnboardingController::class, 'storeGoal'])->name('onboarding.setGoal');
