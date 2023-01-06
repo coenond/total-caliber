@@ -17,7 +17,15 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: true
-    }
+    },
+    postUrl: {
+        type: String,
+        required: true
+    },
+    skipUrl: {
+        type: String,
+        required: false
+    },
 });
 
 const form = useForm({
@@ -28,7 +36,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/dashboard/goals');
+    form.post(props.postUrl);
 };
 
 
@@ -78,7 +86,7 @@ const toggle = (type) => {
                     <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Save Goal
                     </PrimaryButton>
-                    <Link href="/onboarding/set-goal" class="underline ml-2 mt-2">skip</Link>
+                    <Link v-if="props.skipUrl" :href="props.skipUrl" class="underline ml-2 mt-2">skip</Link>
                 </div>
             </form>
         </div>
