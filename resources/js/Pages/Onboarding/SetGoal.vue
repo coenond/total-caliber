@@ -14,11 +14,16 @@ const props = defineProps({
             <div class="w-full bg-gray-200"><div class="bg-[#734b6d] h-1 rounded-full" style="width: 60%"></div></div>
             <h1 class="text-2xl font-bold">Set Your Goal</h1>
 
-            <p>Set your goal and let us help you achieve it! By telling us your goal, we can update your Strava description to reflect your training efforts. Show the world what you're working towards and let us support you along the way</p>
+            <p>Set your goal and let us help you achieve it!</p>
+            <p>By telling us your goal, we can update your Strava description to reflect your training efforts. Show the world what you're working towards and let us support you along the way</p>
             
             <hr />
 
-            <GoalInputForm :sport-types="props.sportTypeOptions" :padding="false"/>
+            <GoalInputForm
+                post-url="/onboarding/goal"
+                skip-url="/onboarding/final"
+                :sport-types="props.sportTypeOptions"
+                :padding="false"/>
         </div>
     </WavyLayout>
 </template>
