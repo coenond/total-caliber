@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserGoalController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Auth\StravaAuthorizeController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -56,7 +57,8 @@ Route::get('/', function () {
 Route::get('health', HealthCheckResultsController::class);
 
 Route::prefix('onboarding')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [OnboardingController::class, 'index'])->name('onboarding');
+    Route::get('/', [OnboardingController::class, 'index'])->name('authorizedFromOnboarding');
+    Route::get('/strava/authorize', [StravaAuthorizeController::class, 'authStrava']);
     Route::get('/set-goal', [OnboardingController::class, 'setGoal'])->name('onboarding.setGoal');
     Route::post('/set-goal', [OnboardingController::class, 'storeGoal'])->name('onboarding.setGoal');
     Route::post('/syncActivities', [OnboardingController::class, 'createSyncJob']);
