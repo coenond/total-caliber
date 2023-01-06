@@ -26,25 +26,7 @@ const props = defineProps({
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
-                    <h1 class="text-xl pb-10">
-                        Welcome <strong>{{ $page.props.auth.user.name }}</strong>,
-                    </h1>
-                    <p v-if="$page.props.userHasStravaAuth">
-                        You've successfully authorized Strava for to track your <strong>Total Caliber.</strong>
-                    </p>
-                    <p v-else>
-                       Click the button below for authorizing Total Caliber to post your progress.
-                    </p>
-                    <div v-if="$page.props.stravaAuthUrl && !$page.props.userHasStravaAuth" class="p-6 mt-6 bg-white">
-                        <a :href=$page.props.stravaAuthUrl>
-                            <StravaBtn />
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div>
             <div v-if="yearOverviewDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <h2 class="text-xl pb-10">
