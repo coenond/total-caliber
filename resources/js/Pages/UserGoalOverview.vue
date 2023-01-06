@@ -95,7 +95,9 @@ const submitStravaDescription = () => {
                         <p>
                             Set your goals to track your efforts.
                         </p>
-                        <GoalInputForm :sport-types="props.sportTypeOptions" />
+                        <GoalInputForm
+                            post-url="/dashboard/goals"
+                            :sport-types="props.sportTypeOptions" />
                     </div>
                 </div>
             </div>
