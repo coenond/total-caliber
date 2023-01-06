@@ -72,7 +72,7 @@ const toggleSportTypes = (type) => showForActivity.value = type;
     <div>
         <div class="mb-5">
             <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Show chart for: </label>
-            <BadgeButton v-for="sportType in sportTypes" :key="sportType" class="border-b" :type="sportType" :selected="showForActivity === sportType" @click="toggleSportTypes(sportType)" />
+            <BadgeButton v-for="sportType in sportTypes" :key="sportType" class="border-b mt-2" :type="sportType" :selected="showForActivity === sportType" @click="toggleSportTypes(sportType)" />
         </div>
         <div class="mb-5">
             <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Show chart in: </label>
