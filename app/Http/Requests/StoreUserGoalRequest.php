@@ -43,6 +43,6 @@ class StoreUserGoalRequest extends FormRequest
 
     public function selectedSportTypes(): Collection
     {
-        return StravaSportType::whereIn('type', $this->get('selectedSportTypes'))->get();
+        return StravaSportType::whereIn('group', $this->get('selectedSportTypes'))->get();
     }
 }
