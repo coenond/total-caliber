@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\StravaSportTypeEnum;
 use App\Jobs\SyncStravaActivities;
 use App\Models\StravaSyncJob;
+use App\Models\UserGoal;
 use App\Services\StravaAuthService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -34,8 +35,10 @@ class OnboardingController extends Controller
     public function setGoal(Request $req): Response
     {
         $user = $req->user();
+        $userGoal = UserGoal::whereUserId($user->id)->with('sportTypes')->first();
         return Inertia::render('Onboarding/SetGoal', [
-            'sportTypeOptions' => StravaSportTypeEnum::supportedForGoals()
+            'sportTypeOptions' => StravaSportTypeEnum::supportedForGoals(),
+            'userGoal' => $userGoal
         ]);
     }
 
