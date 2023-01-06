@@ -26,13 +26,23 @@ const props = defineProps({
         type: String,
         required: false
     },
+    userGoal: {
+        type: Object,
+        required: false
+    }
 });
 
+const uniqueSportTypes = () => {
+    if (!props.userGoal) return [];
+    const typeGroups = props.userGoal.sport_types.map(type => type.group);
+    return typeGroups.filter((a, b) => typeGroups.indexOf(a) === b)
+};
+
 const form = useForm({
-    goalTitle: '',
-    goalStart: '',
-    goalEnd: '',
-    selectedSportTypes: [],
+    goalTitle: props.userGoal?.name ?? '',
+    goalStart:  props.userGoal?.start ?? '',
+    goalEnd: props.userGoal?.end ?? '',
+    selectedSportTypes: uniqueSportTypes(),
 });
 
 const submit = () => {
