@@ -24,7 +24,7 @@ class StravaAuthService
             'response_type' => 'code',
             'approval_prompt' => 'force',
             'scope' => 'activity:read,activity:write,activity:read_all',
-            'redirect_uri' => $fromOnboarding ? url('/onboarding/step/2') : url('/strava/authorize')
+            'redirect_uri' => $fromOnboarding ? url('/onboarding/strava/authorize') : url('/strava/authorize')
         ]);
     }
 
