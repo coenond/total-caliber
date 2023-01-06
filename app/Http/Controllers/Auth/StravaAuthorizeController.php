@@ -25,7 +25,7 @@ class StravaAuthorizeController extends Controller
 
         $this->stravaAuthService->setUserInitialData($stravaAuthToken);
  
-        return Redirect::route('dashboard')->with(['message' => 'Strava successfully authenticated']);
+        return Redirect::route('dashboard')->with(['message' => 'Strava successfully authorized']);
     }
 
     public function authorizedFromOnboarding(Request $req): RedirectResponse
@@ -38,6 +38,6 @@ class StravaAuthorizeController extends Controller
 
         $this->stravaAuthService->setUserInitialData($stravaAuthToken);
  
-        return Redirect::route('dashboard')->with(['message' => 'Strava successfully authenticated']);
+        return Redirect::route('onboarding.setGoal')->with(['message' => 'Strava successfully authorized']);
     }
 }
