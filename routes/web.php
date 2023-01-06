@@ -58,7 +58,11 @@ Route::get('health', HealthCheckResultsController::class);
 Route::prefix('onboarding')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [OnboardingController::class, 'index'])->name('onboarding');
     Route::get('/set-goal', [OnboardingController::class, 'setGoal'])->name('onboarding.setGoal');
+    Route::post('/set-goal', [OnboardingController::class, 'storeGoal'])->name('onboarding.setGoal');
     Route::post('/syncActivities', [OnboardingController::class, 'createSyncJob']);
+    Route::get('/strava-description', [OnboardingController::class, 'setStravaDescription'])->name('onboarding.setStravaDescription');
+    Route::post('/strava-description', [OnboardingController::class, 'storeStravaDescription'])->name('onboarding.storeStravaDescription');
+    Route::get('/final', [OnboardingController::class, 'finalPage'])->name('onboarding.final');
 });
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
