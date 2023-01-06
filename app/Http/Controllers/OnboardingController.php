@@ -49,8 +49,8 @@ class OnboardingController extends Controller
     public function createSyncJob(Request $req): RedirectResponse
     {
         $user = $req->user();
-        $stravaJobModel = StravaSyncJob::create(['user_id' => $user->id]);
 
+        // $stravaJobModel = StravaSyncJob::create(['user_id' => $user->id]);
         // SyncStravaActivities::dispatch($user, $stravaJobModel, 1, Carbon::now()->subYears(10), Carbon::now());
 
         return Redirect::route('onboarding.setGoal')->with('message', 'We started syncing your activities in the background. This can take up to 5 minutes.');
