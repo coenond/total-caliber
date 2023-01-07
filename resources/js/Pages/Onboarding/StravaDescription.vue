@@ -12,8 +12,8 @@ const props = defineProps({
     endReadable: { type: String },
 });
 const stravaDescriptionForm = useForm({
-    enabled: props.stravaDescription?.enabled || false,
-    showTotals: props.stravaDescription?.totals || false,
+    enabled: props.stravaDescription ? props.stravaDescription.enabled : true,
+    showTotals: props.stravaDescription ? props.stravaDescription.show_totals : true,
     showWeekStats: props.stravaDescription?.week_stats || false,
     showMonthStats: props.stravaDescription?.month_stats || false,
 });
