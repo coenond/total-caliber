@@ -21,12 +21,12 @@ class UserGoalController extends Controller
 
         return Inertia::render('UserGoalOverview', [
             'hasGoal' => !empty($userGoal),
-            'name' => $userGoal && $userGoal->name,
-            'start' => $userGoal && $userGoal->start->toDateString(),
-            'startReadable' => $userGoal && $userGoal->start->toFormattedDateString(),
-            'end' => $userGoal && $userGoal->end->toDateString(),
-            'endReadable' => $userGoal && $userGoal->end->toFormattedDateString(),
-            'sportTypes' => $userGoal && $userGoal->sportTypes->pluck('type'),
+            'name' => $userGoal ?  $userGoal->name : null,
+            'start' => $userGoal ?  $userGoal->start->toDateString() : null,
+            'startReadable' => $userGoal ?  $userGoal->start->toFormattedDateString() : null,
+            'end' => $userGoal ?  $userGoal->end->toDateString() : null,
+            'endReadable' => $userGoal ?  $userGoal->end->toFormattedDateString() : null,
+            'sportTypes' => $userGoal ?  $userGoal->sportTypes->pluck('type') : null,
 
             'userStravaDescription' => $userStravaDescription,
 
