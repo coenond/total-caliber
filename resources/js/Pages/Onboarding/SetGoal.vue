@@ -21,7 +21,7 @@ const props = defineProps({
             <hr />
 
             <GoalInputForm
-                post-url="/onboarding/goal"
+                post-url="/onboarding/set-goal"
                 skip-url="/onboarding/strava-description"
                 :sport-types="props.sportTypeOptions"
                 :padding="false"
