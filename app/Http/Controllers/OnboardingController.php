@@ -71,7 +71,7 @@ class OnboardingController extends Controller
             ? 'Your goal is created.'
             : 'Goal is updated.';
 
-        return Redirect::route('onboarding.stravaDescription')->with('message', $message);
+        return Redirect::route('onboarding.setStravaDescription')->with('message', $message);
     }
 
     public function setStravaDescription(Request $req): Response
