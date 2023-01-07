@@ -30,7 +30,7 @@ watch(() => usePage().props.value.notification.message, () => {
             </div>
         </div>
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+            <nav class="bg-[#734b6d] border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -38,7 +38,12 @@ watch(() => usePage().props.value.notification.message, () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo class="block h-9 w-auto" />
+                                    <div class="pl-4 flex items-center">
+                                        <a class="toggle text-white no-underline hover:no-underline font-bold text-l tracking-wide" href="#">
+                                            <img class="w-8 h-8 fill-current inline mb-1" src="/images/chart.svg" />
+                                            TOTAL CALIBER
+                                        </a>
+                                    </div>
                                 </Link>
                             </div>
 
@@ -55,8 +60,6 @@ watch(() => usePage().props.value.notification.message, () => {
                                 </NavLink>
                             </div>
                         </div>
-                                
-                        <img class="w-[150px] ml-[-8px]" src="/images/pwrdBy_strava_horiz_gray.svg" />
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
@@ -64,7 +67,7 @@ watch(() => usePage().props.value.notification.message, () => {
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-[#42275a] focus:outline-none transition ease-in-out duration-150">
                                                 {{ $page.props.auth.user.name }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -115,8 +118,8 @@ watch(() => usePage().props.value.notification.message, () => {
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">{{ $page.props.auth.user.name }}</div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                            <div class="font-medium text-base text-white">{{ $page.props.auth.user.name }}</div>
+                            <div class="font-medium text-sm text-gray-200">{{ $page.props.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
@@ -134,7 +137,14 @@ watch(() => usePage().props.value.notification.message, () => {
             <!-- Page Heading -->
             <header class="bg-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
+                    <div class="flex justify-between">
+                        <div>
+                            <slot name="header" />
+                        </div>
+                        <div>
+                            <img class="w-[150px] ml-[-8px]" src="/images/pwrdBy_strava_horiz_gray.svg" />
+                        </div>
+                    </div>
                 </div>
             </header>
             <!-- Page Content -->
