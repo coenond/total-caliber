@@ -71,8 +71,8 @@ const submitStravaDescription = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
-                    <div v-if="props.hasGoal">
-                        <div class="flex justify-between">
+                    <div v-if="props.hasGoal" class="container mx-auto">
+                        <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div>
                                 <h2 class="font-semibold text-2xl text-gray-800 leading-tight pb-4"><strong>{{ props.name }}</strong></h2>
                                 
@@ -82,7 +82,7 @@ const submitStravaDescription = () => {
                                 <p class="font-bold pt-6 pb-4">Sport types that contribute towards {{ props.name }}:</p>
                                 <BadgeButton v-for="sportType in props.sportTypeOptions" :key="sportType" class="border-b" :type="sportType" :selected="hasSportType(sportType)" @click="toggleSportTypes(sportType)" />
                             </div>
-                            <div>
+                            <div class="py-8 w-full lg:w-1/2">
                                 <CountDownClock :date="props.end" />
                                 <PrimaryButton v-if="goalSportTypeForm.isDirty" @click="submitGoalUpdate()" :class="{ 'opacity-25': goalSportTypeForm.processing }">
                                     Save
