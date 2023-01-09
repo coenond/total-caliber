@@ -10,9 +10,16 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private StravaAuthService $stravaAuthService
+    ) { }
 
     public function renderPage(Request $req): Response
     {
-        return Inertia::render('Profile');
+        $user = $req->user();
+
+        return Inertia::render('Profile', [
+            'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(false)
+        ]);
     }
 }
