@@ -17,10 +17,6 @@ import { Link } from '@inertiajs/inertia-vue3'
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
-                    <h1 class="text-xl pb-10">
-                        These are your latests activities on Strava {{ $page.props.auth.user.name }},
-                    </h1>
-
                     <div v-if="$page.props.syncIsOnCoolDown" class="py-4">
                         <span class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-gray-400 border border-gray-500 rounded-md shadow-sm">
                             Sync my activities
@@ -57,7 +53,8 @@ import { Link } from '@inertiajs/inertia-vue3'
                         <tbody>
                             <tr v-for="activity in $page.props.activities" :key="activity.id" class="border-b" >
                                 <td class="text-sm font-light px-6 py-4">
-                                    <a :href="`https://www.strava.com/activities/${activity.strava_id}`" class="hover:underline" target="_blank">{{activity.name}}</a>
+                                    <p class="font-bold">{{activity.name}}</p>
+                                    <a :href="`https://www.strava.com/activities/${activity.strava_id}`" class="underline italic text-blue" target="_blank">View on strava</a>
                                 </td>
                                 <td class="text-sm font-light px-6 py-4 whitespace-nowrap">
                                     {{activity.sport_type.type}}
