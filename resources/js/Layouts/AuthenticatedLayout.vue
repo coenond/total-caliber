@@ -79,7 +79,7 @@ watch(() => usePage().props.value.notification.message, () => {
 
                                     <template #content>
                                         <DropdownLink :href="route('dashboard.profile')" as="button">
-                                            My Profile
+                                            Settings
                                         </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
@@ -124,7 +124,7 @@ watch(() => usePage().props.value.notification.message, () => {
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('dashboard.profile')" as="button">
-                                My Profile
+                                Settings
                             </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
