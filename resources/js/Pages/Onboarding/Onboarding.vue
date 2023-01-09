@@ -56,7 +56,7 @@ const props = defineProps({
 
             <p>Click the button below to link your Strava account.</p>       
 
-            <p></p>     
+            <p></p>
             <a :href=props.stravaAuthUrl>
                 <StravaBtn />
             </a>
