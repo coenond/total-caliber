@@ -16,7 +16,7 @@ class StravaWebhookController extends Controller
 
     public function handle(StravaWebhookRequest $req)
     {
-        $this->stravaActivityService->handleNewIncomingActivity(
+        $this->stravaActivityService->handleIncomingWebhook(
             $req->aspectType(),
             $req->objectType(),
             $req->athleteId(),

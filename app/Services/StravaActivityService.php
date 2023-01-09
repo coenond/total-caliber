@@ -7,7 +7,11 @@ use App\Enums\StravaWebhooks\StravaObjectTypeEnum;
 use App\Jobs\CreateStravaActivityFromWebhook;
 use App\Jobs\DeleteStravaActivityFromWebhook;
 use App\Jobs\UpdateStravaActivityFromWebhook;
+use App\Models\StravaAccessToken;
 use App\Models\StravaActivity;
+use App\Models\StravaAuthToken;
+use App\Models\StravaProfile;
+use App\Models\StravaRefreshToken;
 use App\Models\StravaSportType;
 use App\Models\User;
 use App\Utils\QuerySorter;
@@ -112,7 +116,7 @@ class StravaActivityService
         StravaActivity::insert($inserts);
     }
 
-    public function handleNewIncomingActivity(
+    public function handleIncomingWebhook(
         StravaAspectTypeEnum $aspectType,
         StravaObjectTypeEnum $objectType,
         int $athleteId,
@@ -120,7 +124,7 @@ class StravaActivityService
         array $updates
     ): void {
         if ($objectType === StravaObjectTypeEnum::athlete) {
-            // handle athlete update.
+            $aspectType === StravaAspectTypeEnum::delete && $this->deleteStravaAuthForAthlete($athleteId);
             return;
         }
 
@@ -137,6 +141,16 @@ class StravaActivityService
         }
 
         return;
+    }
+
+    private function deleteStravaAuthForAthlete(int $athleteId): void
+    {
+        $athlete = StravaProfile::whereStravaId($athleteId)->first();
+        if (!$athlete) return;
+
+        StravaRefreshToken::whereUserId($athlete->user_id)->delete();
+        StravaAccessToken::whereUserId($athlete->user_id)->delete();
+        StravaAuthToken::whereUserId($athlete->user_id)->delete();
     }
 
     private function markAsFailed(Response $result): void
