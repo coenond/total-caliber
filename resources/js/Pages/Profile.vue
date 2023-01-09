@@ -65,13 +65,16 @@ export default {
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="p-6 space-y-6">
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        Are you sure you want to delete your profile?
-                    </p>
-                    <p class="text-xl leading-relaxed text-red-400">
-                        This action cannot be undone!
-                    </p>
+                <div class="p-6 space-y-6 text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    <p>We're sad to see you go. Please note that this action cannot be undone and all of your data will be permanently erased. If you have any questions or concerns, please don't hesitate to contact us. Are you sure you want to proceed with deleting your data?</p>
+                    <p>We'll delete:</p>
+                    <ul class="list-disc  pl-4">
+                        <li>Your Strava connection</li>
+                        <li>All your Strava Activities (on this website)</li>
+                        <li>Any goals that were set</li>
+                    </ul>
+
+                    <p class="italic">This action is not automated supported yet. Please reach out to us with your email address, and we'll take care of it as soon as possible.</p>
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
