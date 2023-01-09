@@ -1,27 +1,18 @@
-<script>
-import { computed } from 'vue'
+<script setup>
+import { ref } from 'vue';
+import { Link, Head } from '@inertiajs/inertia-vue3';
 import StravaBtn from '@/Components/StravaBtn.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 
-export default {
-    components: {
-        AuthenticatedLayout, Head
-    },
-    data() {
-        return {
-            modalOpen: false,
-        };
-    },
-    methods: {
-        openModal() {
-            this.modalOpen = true;
-        },
-        closeModal() {
-            this.modalOpen = false;
-        },
-    },
-}
+
+const props = defineProps({
+    stravaAuthUrl: { type: String, required: true },
+});
+
+const modalOpen = ref(false);
+const openModal = () => modalOpen.value = true;
+const closeModal = () => modalOpen.value = false;
 </script>
 
 <template>
