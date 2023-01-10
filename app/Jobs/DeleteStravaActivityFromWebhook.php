@@ -12,8 +12,6 @@ use Illuminate\Queue\SerializesModels;
 
 class DeleteStravaActivityFromWebhook implements ShouldQueue
 {
-    private const PAGE_LIMIT = 100;
-
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
