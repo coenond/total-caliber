@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class DataQueryService
@@ -129,5 +130,15 @@ class DataQueryService
             'data_in_time' => $aggregateInTime,
             'sport_types' => $sportTypes,
         ];
+    }
+
+    public function getStravaDescriptionDate(User $user, Carbon $begin, string $sportTypeGroup): Collection
+    {
+        return DB::table('strava_activities')
+            ->join('strava_sport_types as sst', 'sst.id', '=', 'strava_activities.type_id')
+            ->where('user_id', '=', $user->id)
+            ->where('start_date', '>=', $begin)
+            ->where('sst.group', '=', $sportTypeGroup)
+            ->get();
     }
 }
