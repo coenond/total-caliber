@@ -50,7 +50,7 @@ enum StravaSportTypeEnum
     {
         return array_map(
             fn ($type) => $type->name,
-            [StravaSportTypeEnum::Run, StravaSportTypeEnum::Ride, StravaSportTypeEnum::Swim]
+            [StravaSportTypeEnum::Run, StravaSportTypeEnum::Ride]
         );
     }
 }
