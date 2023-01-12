@@ -89,8 +89,7 @@ class StravaDescriptionService
     private function title(): string
     {
         return '
->> Total Caliber Report <<
-';
+>> Total Caliber Report <<';
     }
     private function totalsTitle(): string
     {
