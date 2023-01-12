@@ -23,5 +23,7 @@ class CreateStravaActivityFromWebhook implements ShouldQueue
     {
         $user = StravaProfile::whereStravaId($this->athleteId)->firstOrFail()->user;
         $activityService->getOneFromStravaAndStore($user, $this->activityId);
+
+        UpdateStravaDescription::dispatch($this->athleteId, $this->activityId);
     }
 }
