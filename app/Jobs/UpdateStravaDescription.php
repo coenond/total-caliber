@@ -2,12 +2,17 @@
 
 namespace App\Jobs;
 
+use App\Enums\StravaSportTypeEnum;
 use App\Models\StravaProfile;
+use App\Models\StravaSportType;
 use App\Models\UserGoal;
 use App\Models\UserStravaDescription;
 use App\Services\StravaActivityService;
+use App\Services\StravaClient;
+use App\Services\StravaDescriptionService;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;p
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -21,10 +26,16 @@ class UpdateStravaDescription implements ShouldQueue
         private int $activityId
     ) { }
 
-    public function handle(StravaActivityService $activityService): void
-    {
+    public function handle(
+        StravaActivityService $activityService,
+        StravaDescriptionService $descriptionService,
+        StravaClient $stravaClient
+    ): void {
         $user = StravaProfile::whereStravaId($this->athleteId)->firstOrFail()->user;
         $activity = $activityService->getOneFromStrava($user, $this->activityId);
+
+        $sportType = StravaSportType::whereType($activity['sport_type'])->firstOrFail();
+        if (!in_array($sportType->group, StravaSportTypeEnum::supportedForGoals())) return;
 
         // Currently only support one goal per user
         $userGoal = UserGoal::whereUserId($user->id)->with('sportTypes')->first();
@@ -35,33 +46,19 @@ class UpdateStravaDescription implements ShouldQueue
         if (!$descriptionSettings) return;
         if (!$descriptionSettings->enabled) return;
 
-        $appendedDescription = $activity['description'] . '
+        $description = $descriptionService->createPlainTextDescription(
+            $user,
+            $userGoal,
+            $descriptionSettings,
+            $activity['description']
+        );
 
->> Total Caliber Report <<';
+        $response = $stravaClient->requestUpdateActivityDescription($user, $this->activityId, $description);
 
-        if ($descriptionSettings->totals) {
-            $appendedDescription += '
-  Totals:
-   - 22 runs: 321.2km in 25h 32min
-   - 3 rides: 132.2km in 4h 12min';
+        if (!$response->successful()) {
+            $status = $response->status();
+            $reason = $response->reason();
+            throw new Exception("Failed to update Strava description. Got {$status} because: {$reason}");
         }
-
-        if ($descriptionSettings->week_stats) {
-            $appendedDescription += '
-  Total this week:
-   - 1 run, 12.3km, 1h 31min
-   - 1 ride: 30.8km in 1h 3min';
-        }
-
-        if ($descriptionSettings->month_stats) {
-            $appendedDescription += '
-  Month stats:
-   - 12 runs, 88.3km, 1h 32
-   - 2 rides: 132.2km in 4h 12min';
-        }
-
-        $appendedDescription += '
-Training from 15 nov. 2022 towards my goal on 2 april 2023
->> by https://totalcaliber.com/';
     }
 }
