@@ -47,7 +47,7 @@ watch(() => usePage().props.value.notification.message, () => {
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
+                            <!-- Navigation Links --> 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
@@ -58,6 +58,9 @@ watch(() => usePage().props.value.notification.message, () => {
                                 <NavLink :href="route('my-activities')" :active="route().current('my-activities')">
                                     My Activities
                                 </NavLink>
+                                <a v-if="$page.props.auth.user.is_admin" href="/horizon" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Horizon
+                                </a>
                             </div>
                         </div>
 
