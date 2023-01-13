@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 class StravaDescriptionService
 {
     private const METERS_IN_KM = 1000;
+    private const SECONDS_IN_HOUR = 3600;
+    private const SECONDS_IN_MINUTE= 60;
 
     public function __construct(
         private DataQueryService $queryService
@@ -79,7 +81,11 @@ class StravaDescriptionService
   - {$count} {$type}s";
         }
         $type = $count > 1 ? $type.'s' : $type;
-        $time = gmdate('H\h i\m\i\n', $timeInSeconds);
+
+        $hours = (int)($timeInSeconds / self::SECONDS_IN_HOUR);
+        $minutes = (int)(($timeInSeconds % self::SECONDS_IN_HOUR) / self::SECONDS_IN_MINUTE);
+        $time = "{$hours}h {$minutes}min";
+
         $distance = round($distanceInMeters / self::METERS_IN_KM, 1);
 
         return "
@@ -114,7 +120,7 @@ class StravaDescriptionService
         $end = $userGoal->end->toFormattedDateString();
 
         return '
-Training from '.$start.' towards my goal on '.$end.'
+Training from '.$start.' towards '.$userGoal->name.' on '.$end.'
 >> by https://totalcaliber.com/';
     }
 }
