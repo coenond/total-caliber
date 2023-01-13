@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 class StravaDescriptionService
 {
     private const METERS_IN_KM = 1000;
-    
+
     public function __construct(
         private DataQueryService $queryService
     ) { }
@@ -33,12 +33,12 @@ class StravaDescriptionService
         User $user,
         UserGoal $userGoal,
         UserStravaDescription $descriptionSettings,
-        string $baseDescription
+        string $baseDescription = null
     ): string {
         /** @var Collection */
         $activityTypes = $userGoal->sportTypes->pluck('group')->unique();
 
-        $desc = $baseDescription . $this->title();
+        $desc =  $this->title($baseDescription);
 
         if ($descriptionSettings->totals) {
             $desc .= $this->totalsTitle();
@@ -86,10 +86,12 @@ class StravaDescriptionService
   - {$count} {$type}: {$distance}km in {$time}";
     }
 
-    private function title(): string
+    private function title(string $baseDescription = null): string
     {
-        return '
->> Total Caliber Report <<';
+        $title = '>> Total Caliber Report <<';
+
+        return empty($baseDescription) ? $title : '
+'.$title;
     }
     private function totalsTitle(): string
     {

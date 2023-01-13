@@ -50,7 +50,7 @@ class UpdateStravaDescription implements ShouldQueue
             $user,
             $userGoal,
             $descriptionSettings,
-            $activity['description']
+            isset($activity['description']) ? $activity['description'] : null
         );
 
         $response = $stravaClient->requestUpdateActivityDescription($user, $this->activityId, $description);
