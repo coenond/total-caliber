@@ -90,7 +90,7 @@ class StravaDescriptionService
     {
         $title = '>> Total Caliber Report <<';
 
-        return empty($baseDescription) ? $title : '
+        return empty($baseDescription) ? $title : $baseDescription . '
 '.$title;
     }
     private function totalsTitle(): string
