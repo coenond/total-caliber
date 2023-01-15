@@ -10,6 +10,7 @@ use App\Models\UserStravaDescription;
 use App\Services\StravaActivityService;
 use App\Services\StravaClient;
 use App\Services\StravaDescriptionService;
+use Carbon\CarbonPeriod;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,6 +42,8 @@ class UpdateStravaDescription implements ShouldQueue
         $userGoal = UserGoal::whereUserId($user->id)->with('sportTypes')->first();
         if (!$userGoal) return;
         if (!$userGoal->sportTypes->contains('type', $activity['sport_type'])) return;
+        $period = CarbonPeriod::create($userGoal->start, $userGoal->end->addDay());
+        if (!$period->isInProgress()) return;
 
         $descriptionSettings = UserStravaDescription::whereUserId($user->id)->first();
         if (!$descriptionSettings) return;
@@ -50,7 +53,7 @@ class UpdateStravaDescription implements ShouldQueue
             $user,
             $userGoal,
             $descriptionSettings,
-            $activity['description']
+            isset($activity['description']) ? $activity['description'] : null
         );
 
         $response = $stravaClient->requestUpdateActivityDescription($user, $this->activityId, $description);
