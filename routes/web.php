@@ -69,6 +69,7 @@ Route::prefix('onboarding')->middleware(['auth', 'verified'])->group(function ()
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'renderDashboardPage'])->name('dashboard');
+    Route::get('/v2', [DashboardController::class, 'renderNewDashboard']);
     Route::get('/profile', [ProfileController::class, 'renderPage'])->name('dashboard.profile');
     Route::get('/goals', [UserGoalController::class, 'index'])->name('dashboard.goals');
     Route::post('/goals', [UserGoalController::class, 'store'])->name('dashboard.goals.store');

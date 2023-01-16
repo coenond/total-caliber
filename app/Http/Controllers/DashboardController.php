@@ -17,6 +17,11 @@ class DashboardController extends Controller
         private DataQueryService $dataQueryService,
     ) { }
 
+    public function renderNewDashboard()
+    {
+        return Inertia::render('DashboardV2');
+    }
+
     public function renderDashboardPage(Request $req): Response
     {
         $user = $req->user();
