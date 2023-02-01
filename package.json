@@ -21,7 +21,9 @@
     },
     "dependencies": {
         "@vuepic/vue-datepicker": "^3.5.3",
+        "apexcharts": "^3.36.3",
         "chart.js": "^4.0.1",
-        "vue-chartjs": "^5.1.0"
+        "vue-chartjs": "^5.1.0",
+        "vue3-apexcharts": "^1.4.1"
     }
 }
