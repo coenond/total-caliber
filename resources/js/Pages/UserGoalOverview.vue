@@ -123,26 +123,25 @@ const submitStravaDescription = () => {
                         </div>
                     </div>
 
-                    <div class="bg-gray-100 rounded-md flex justify-between lg:w-1/3 md:w-2/3 px-2 pt-2 pb-4 pr-5">
-                        <span class="pt-2">Use simple description</span>
-                        <label class="inline-flex relative items-center cursor-pointer mt-2">
-                            <input @click="toggleDescriptionKey('simple')" type="checkbox" value="" class="sr-only peer" :checked="stravaDescriptionForm.simple">
-                            <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#734b6d]"></div>
-                        </label>
-                    </div>
-
-                    <div v-if="stravaDescriptionForm.enabled && !stravaDescriptionForm.simple" class="flex justify-between">
-                        <div class="mb-5">
-                            <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
-                            <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggleDescriptionKey('showTotals')" />
-                            <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggleDescriptionKey('showWeekStats')" />
-                            <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggleDescriptionKey('showMonthStats')" />
+                    <div v-if="stravaDescriptionForm.enabled" class="flex justify-between">
+                        <div class="bg-gray-100 rounded-md flex justify-between lg:w-1/3 md:w-2/3 px-2 pt-2 pb-4 pr-5">
+                            <span class="pt-2">Use simple description</span>
+                            <label class="inline-flex relative items-center cursor-pointer mt-2">
+                                <input @click="toggleDescriptionKey('simple')" type="checkbox" value="" class="sr-only peer" :checked="stravaDescriptionForm.simple">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#734b6d]"></div>
+                            </label>
                         </div>
                         <div>
                             <PrimaryButton v-if="stravaDescriptionForm.isDirty" @click="submitStravaDescription()" :class="{ 'opacity-25': stravaDescriptionForm.processing }">
                                 Save
                             </PrimaryButton>
                         </div>
+                    </div>
+                    <div v-if="stravaDescriptionForm.enabled && !stravaDescriptionForm.simple" class="mb-5">
+                        <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
+                        <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggleDescriptionKey('showTotals')" />
+                        <BadgeButton class="border-b mt-2" type="Week Stats" :selected="stravaDescriptionForm.showWeekStats" @click="toggleDescriptionKey('showWeekStats')" />
+                        <BadgeButton class="border-b mt-2" type="Month Stats" :selected="stravaDescriptionForm.showMonthStats" @click="toggleDescriptionKey('showMonthStats')" />
                     </div>
 
                     <div v-if="stravaDescriptionForm.enabled && goalSportTypeForm.selectedSportTypes.length > 0" class="mt-12">
