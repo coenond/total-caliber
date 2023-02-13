@@ -43,7 +43,7 @@ class StravaDescriptionService
         if ($descriptionSettings->simple) {
             $type = $activityTypes->first();
             $data = $this->queryService->getStravaDescriptionDate($user, $userGoal->start, $type);
-            $simpleDesc = $this->createSimpleDataLine($data->count(), $type, $data->sum('distance'), $data->sum('moving_time'), $userGoal);
+            $simpleDesc = $this->createSimpleDataLine($baseDescription, $data->count(), $type, $data->sum('distance'), $data->sum('moving_time'), $userGoal);
             return $simpleDesc . $this->tagLine();
         };
 
@@ -81,7 +81,7 @@ class StravaDescriptionService
         return $desc;
     }
 
-    private function createSimpleDataLine(int $count, string $type, float $distanceInMeters, int $timeInSeconds, UserGoal $goal): string
+    private function createSimpleDataLine(string $baseDescription = null, int $count, string $type, float $distanceInMeters, int $timeInSeconds, UserGoal $goal): string
     {
         $distance = round($distanceInMeters / self::METERS_IN_KM, 1);
         $hours = (int)($timeInSeconds / self::SECONDS_IN_HOUR);
@@ -90,11 +90,17 @@ class StravaDescriptionService
         $type = $count > 1 ? $type.'s' : $type;
         $end = $goal->end->toFormattedDateString();
 
-        return "
- Totals: {$distance}km, {$time} in {$count} {$type} towards {$goal->name} on {$end}.";
+        $desc = "Totals: {$distance}km, {$time} in {$count} {$type} towards {$goal->name} on {$end}.";
+
+        if ($baseDescription) {
+            return $baseDescription . "
+{$desc}";
+        } else {
+            return $desc;
+        }
     }
 
-   private function createDataLine(int $count, string $type, float $distanceInMeters, int $timeInSeconds): string
+    private function createDataLine(int $count, string $type, float $distanceInMeters, int $timeInSeconds): string
     {
         if ($count === 0) {
                     return "
