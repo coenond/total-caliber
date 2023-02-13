@@ -13,6 +13,7 @@ class UserStravaDescription extends Model
     
     protected $casts = [
         'enabled' => 'boolean',
+        'simple' => 'boolean',
         'totals' => 'boolean',
         'week_stats' => 'boolean',
         'month_stats' => 'boolean',
