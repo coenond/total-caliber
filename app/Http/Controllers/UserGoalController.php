@@ -58,6 +58,7 @@ class UserGoalController extends Controller
         // @todo: Move to service
         UserStravaDescription::updateOrCreate([ 'user_id' => $user->id ], [
             'enabled' => $req->enabled(),
+            'simple' => $req->simple(),
             'totals' => $req->showTotals(),
             'week_stats' => $req->showWeekStats(),
             'month_stats' => $req->showMonthStats()

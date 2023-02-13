@@ -28,6 +28,11 @@ class StoreUserStravaDescriptionRequest extends FormRequest
         return $this->boolean('enabled');
     }
 
+    public function simple(): bool
+    {
+        return $this->boolean('simple');
+    }
+
     public function showTotals(): bool
     {
         return $this->boolean('showTotals');
