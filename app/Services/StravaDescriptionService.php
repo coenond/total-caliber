@@ -44,8 +44,6 @@ class StravaDescriptionService
             $type = $activityTypes->first();
             $data = $this->queryService->getStravaDescriptionDate($user, $userGoal->start, $type);
             $simpleDesc = $this->createSimpleDataLine($data->count(), $type, $data->sum('distance'), $data->sum('moving_time'), $userGoal);
-            $simpleDesc .= $this->footer($userGoal);
-
             return $simpleDesc . $this->tagLine();
         };
 
