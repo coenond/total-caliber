@@ -26,6 +26,7 @@ const goalSportTypeForm = useForm({
 });
 const stravaDescriptionForm = useForm({
     enabled: props.userStravaDescription?.enabled || false,
+    simple: props.userStravaDescription?.simple || false,
     showTotals: props.userStravaDescription?.totals || false,
     showWeekStats: props.userStravaDescription?.week_stats || false,
     showMonthStats: props.userStravaDescription?.month_stats || false,
@@ -39,11 +40,20 @@ const toggleStravaDescription = () => {
 
 };
 const toggleSportTypes = (key) => {
-    goalSportTypeForm.selectedSportTypes.includes(key)
-        ? goalSportTypeForm.selectedSportTypes = goalSportTypeForm.selectedSportTypes.filter((t) => t !== key)
-        : goalSportTypeForm.selectedSportTypes.push(key);
+    if (stravaDescriptionForm['simple']) {
+         goalSportTypeForm.selectedSportTypes = [key];
+    } else {
+        goalSportTypeForm.selectedSportTypes.includes(key)
+            ? goalSportTypeForm.selectedSportTypes = goalSportTypeForm.selectedSportTypes.filter((t) => t !== key)
+            : goalSportTypeForm.selectedSportTypes.push(key);
+    }
 };
 const toggleDescriptionKey = (key) => {
+    if (key === 'simple') {
+        if (goalSportTypeForm.selectedSportTypes.length > 1) {
+            goalSportTypeForm.selectedSportTypes = ['Run'];
+        }
+    }
     stravaDescriptionForm[key] = !stravaDescriptionForm[key]
 };
 const hasSportType = (type) => {
@@ -113,7 +123,15 @@ const submitStravaDescription = () => {
                         </div>
                     </div>
 
-                    <div v-if="stravaDescriptionForm.enabled" class="flex justify-between">
+                    <div class="bg-gray-100 rounded-md flex justify-between lg:w-1/3 md:w-2/3 px-2 pt-2 pb-4 pr-5">
+                        <span class="pt-2">Use simple description</span>
+                        <label class="inline-flex relative items-center cursor-pointer mt-2">
+                            <input @click="toggleDescriptionKey('simple')" type="checkbox" value="" class="sr-only peer" :checked="stravaDescriptionForm.simple">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#734b6d]"></div>
+                        </label>
+                    </div>
+
+                    <div v-if="stravaDescriptionForm.enabled && !stravaDescriptionForm.simple" class="flex justify-between">
                         <div class="mb-5">
                             <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">Select the sport types you want to include in your summaries</label>
                             <BadgeButton class="border-b mt-2" type="Totals" :selected="stravaDescriptionForm.showTotals" @click="toggleDescriptionKey('showTotals')" />
@@ -127,25 +145,28 @@ const submitStravaDescription = () => {
                         </div>
                     </div>
 
-                    <div v-if="stravaDescriptionForm.enabled" class="mt-12">
+                    <div v-if="stravaDescriptionForm.enabled && goalSportTypeForm.selectedSportTypes.length > 0" class="mt-12">
                         <strong>Description preview</strong>
                         <hr class="my-3"/>
-                        <div class="font-mono">
-                            <p>&gt;&gt; Training Caliber &lt;&lt;</p>
+                        <div v-if="stravaDescriptionForm.simple" class="font-mono">
+                            <p>Totals: 276km, 16h 12min in 35 runs towards {{ props.name }} on {{ props.endReadable }}.</p>
+                            <p>&gt;&gt; by https://totalcaliber.com/</p>
+                        </div>
+                        <div v-else class="font-mono">
+                            <p>&gt;&gt; Total Caliber Report &lt;&lt;</p>
                             <p v-if="stravaDescriptionForm.showTotals">Totals:</p>
-                            <p v-if="stravaDescriptionForm.showTotals">- 22 runs: 190.2km in 16h 12min</p>
-                            <p v-if="stravaDescriptionForm.showTotals">- 8 rides: 324km in 11h 38min</p>
+                            <p v-if="stravaDescriptionForm.showTotals && goalSportTypeForm.selectedSportTypes.includes('Run')">- 22 runs: 190.2km in 16h 12min</p>
+                            <p v-if="stravaDescriptionForm.showTotals && goalSportTypeForm.selectedSportTypes.includes('Ride')">- 8 rides: 324km in 11h 38min</p>
                             <p v-if="stravaDescriptionForm.showWeekStats">This week:</p>
-                            <p v-if="stravaDescriptionForm.showWeekStats">- 1 run, 12.3km, 1h 8min</p>
-                            <p v-if="stravaDescriptionForm.showWeekStats">- 1 ride: 62.9km in 2h 10min</p>
+                            <p v-if="stravaDescriptionForm.showWeekStats && goalSportTypeForm.selectedSportTypes.includes('Run')">- 1 run, 12.3km, 1h 8min</p>
+                            <p v-if="stravaDescriptionForm.showWeekStats && goalSportTypeForm.selectedSportTypes.includes('Ride')">- 1 ride: 62.9km in 2h 10min</p>
                             <p v-if="stravaDescriptionForm.showMonthStats">This month:</p>
-                            <p v-if="stravaDescriptionForm.showMonthStats">- 8 runs, 62.3km in 5h 15min</p>
-                            <p v-if="stravaDescriptionForm.showMonthStats">- 3 rides: 143.2km in 4h 43min</p>
+                            <p v-if="stravaDescriptionForm.showMonthStats && goalSportTypeForm.selectedSportTypes.includes('Run')">- 8 runs, 62.3km in 5h 15min</p>
+                            <p v-if="stravaDescriptionForm.showMonthStats && goalSportTypeForm.selectedSportTypes.includes('Ride')">- 3 rides: 143.2km in 4h 43min</p>
                             <p>Training from {{ props.startReadable }} towards my goal on {{ props.endReadable }}</p>
-                            <p>----</p>
+                            <p>&gt;&gt; by https://totalcaliber.com/</p>
                         </div>
                         <hr class="my-3"/>
-
                     </div>
                 </div>
             </div>
