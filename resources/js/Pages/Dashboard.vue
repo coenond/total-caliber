@@ -30,6 +30,20 @@ const props = defineProps({
             <div v-if="yearOverviewDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <h2 class="text-xl pb-10">
+                       Your year contribution
+                    </h2>
+
+                    <div class="flex">
+                        <div v-for="i in 52" :key="i">
+                            <div v-for="index in 7" :key="index" class="w-4 h-4 bg-red-300 rounded-sm mr-1 mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="yearOverviewDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
+                <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
+                    <h2 class="text-xl pb-10">
                        Your year progress
                     </h2>
 
