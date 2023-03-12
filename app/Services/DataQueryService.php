@@ -132,6 +132,63 @@ class DataQueryService
         ];
     }
 
+    public function getYearContribution(User $user): array
+    {
+        $lastYear = Carbon::now()->subWeeks(52)->startOfWeek()->toDateString();
+    
+        $today = Carbon::now();
+
+        $data = DB::table('strava_activities')
+            ->select(
+                DB::raw('SUBSTRING(start_date, 1, 10) as onDay'),
+                DB::raw('SUM(distance) / 1000 as totalDistance'),
+                DB::raw('SUM(moving_time) as totalTime')
+            )
+            ->whereUserId($user->id)
+            ->groupBy('onDay')
+            ->orderBy('onDay')
+            ->get()
+            ->keyBy('onDay');
+
+
+        $computedDataLastYear = [];
+        $weeksInLastYear = CarbonPeriod::create($lastYear, '1 week', Carbon::now());
+        foreach ($weeksInLastYear as $i => $week) {
+            $daysInWeek = CarbonPeriod::create($week->startOfWeek(), '1 day', 7);
+            foreach ($daysInWeek as $j => $day) {
+                if (!$day->isPast()) continue;
+
+                $dayStr = $day->toDateString();
+                $computedDataLastYear[$i][$j] = [
+                    'day' => $dayStr,
+                    'grade' => $data->has($dayStr) ? $this->getActivityGrade($data[$dayStr]) : 0
+                ];
+            }
+        }
+
+        $computedDataByYear = [];
+        $firstDay = new Carbon($data->first()->onDay);
+        $allYears = CarbonPeriod::create($firstDay->startOfYear(), '1 year', Carbon::now());
+        foreach ($allYears as $year) {
+            $weeksInYear = CarbonPeriod::create($year->startOfYear(), '1 week', 52);
+            $computedDataByYear = [ 'year' => $year->year, 'data' => []];
+            foreach ($weeksInYear as $i => $week) {
+                $daysInWeek = CarbonPeriod::create($week->startOfWeek(), '1 day', 7);
+                foreach ($daysInWeek as $j => $day) {
+                    if (!$day->isPast()) continue;
+
+                    $dayStr = $day->toDateString();
+                    $computedDataByYear[$year->year]['data'][$i][$j] = [
+                        'day' => $dayStr,
+                        'grade' => $data->has($dayStr) ? $this->getActivityGrade($data[$dayStr]) : 0
+                    ];
+                }
+            }
+        }
+
+        return ['byYear' => $computedDataByYear, 'lastYear' => $computedDataLastYear];
+    }
+
     public function getStravaDescriptionDate(User $user, Carbon $begin, string $sportTypeGroup): Collection
     {
         return DB::table('strava_activities')
@@ -140,5 +197,15 @@ class DataQueryService
             ->where('start_date', '>=', $begin)
             ->where('sst.group', '=', $sportTypeGroup)
             ->get();
+    }
+
+    private function getActivityGrade(object $data): int
+    {
+        $activityMinutes = $data->totalTime / 60;
+
+        if ($activityMinutes < 40) return 2;
+        if ($activityMinutes < 90) return 4;
+        if ($activityMinutes < 180) return 6;
+        return 8;
     }
 }
