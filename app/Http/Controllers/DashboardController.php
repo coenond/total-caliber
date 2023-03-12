@@ -27,11 +27,16 @@ class DashboardController extends Controller
         $user = $req->user();
         $userHasStravaAuth = $this->stravaAuthService->userHasStravaAuth($user);
 
+        $this->dataQueryService->getYearContribution($user);
+
         $weekDataChart = $userHasStravaAuth
             ? $this->dataQueryService->getYearOverViewByWeek($user)
             : null;
         $yearDataChart = $userHasStravaAuth
             ? $this->dataQueryService->getYearProgress($user)
+            : null;
+        $yearContribution = $userHasStravaAuth
+            ? $this->dataQueryService->getYearContribution($user)
             : null;
 
         return Inertia::render('Dashboard', [
@@ -45,6 +50,9 @@ class DashboardController extends Controller
             'yearOverviewDataChartDataInTime' => $yearDataChart ? $yearDataChart['data_in_time'] : null,
             'yearOverviewDataChartDataInDistance' => $yearDataChart ? $yearDataChart['data_in_distance'] : null,
             'yearOverviewDataChartLabels' => $yearDataChart ? array_values($yearDataChart['labels']) : null,
+
+            'yearContributionByYear' => $yearContribution ? array_values($yearContribution['byYear']) : null,
+            'yearContributionLastYear' => $yearContribution ? array_values($yearContribution['lastYear']) : null,
 
             'success_message' => session()->get('success_message')
         ]);
