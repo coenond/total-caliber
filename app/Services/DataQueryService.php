@@ -134,7 +134,7 @@ class DataQueryService
 
     public function getYearContribution(User $user): array
     {
-        $lastYear = Carbon::now()->subWeeks(52)->startOfWeek()->toDateString();
+        $lastYear = Carbon::now()->subWeeks(53)->startOfWeek()->toDateString();
     
         $today = Carbon::now();
 
