@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted, ref } from 'vue';
 import StravaBtn from '@/Components/StravaBtn.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
@@ -13,7 +14,19 @@ const props = defineProps({
     yearOverviewDataChartDataInTime: { type: Object, required: false },
     yearOverviewDataChartDataInDistance: { type: Object, required: false },
     yearOverviewDataChartLabels: { type: Array, required: false },
+
+    yearContributionByYear: { type: Array, required: false },
+    yearContributionLastYear: { type: Array, required: false },
 });
+
+const selectedYear = ref(2023);
+const windowSize = ref(0);
+const onScreenResize = () => {
+    window.addEventListener("resize", () => {
+        windowSize.value = window.innerWidth;
+    });
+};
+onMounted(() => onScreenResize());
 </script>
 
 <template>
@@ -27,15 +40,15 @@ const props = defineProps({
         </template>
 
         <div>
-            <div v-if="yearOverviewDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
+            <div v-if="yearContributionLastYear" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
                     <h2 class="text-xl pb-10">
                        Your year contribution
                     </h2>
 
                     <div class="flex">
-                        <div v-for="i in 52" :key="i">
-                            <div v-for="index in 7" :key="index" class="w-4 h-4 bg-red-300 rounded-sm mr-1 mt-1"></div>
+                        <div v-for="week in yearContributionLastYear" :key="week">
+                            <div v-for="day in week" :key="day.day" :class="`w-4 h-4 ${day.grade === 0 ? 'bg-gray-200' : `bg-red-${day.grade}00`} rounded-sm mr-1 mt-1`"></div>
                         </div>
                     </div>
                 </div>
