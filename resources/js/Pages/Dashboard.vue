@@ -56,6 +56,29 @@ const colorVariants = {
                        Your year contribution
                     </h2>
 
+                    <div class="inline-flex mb-4">
+                        <div class="inline-flex mr-6">
+                            <div class="bg-gray-200 w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <p>No activities on this day</p>
+                        </div>
+                        <div class="inline-flex mr-6">
+                            <div class="bg-[#ddbbdd] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <p>&#60; 40 minutes</p>
+                        </div>
+                        <div class="inline-flex mr-6">
+                            <div class="bg-[#ca97ca] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <p>&#60; 1.5 hours</p>
+                        </div>
+                        <div class="inline-flex mr-6">
+                            <div class="bg-[#ad5cad] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <p>&#60; 3 hours</p>
+                        </div>
+                        <div class="inline-flex mr-6">
+                            <div class="bg-[#ad5cad] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <p>&#62; 3 hours</p>
+                        </div>
+                    </div>
+
                     <div class="flex">
                         <div v-for="week in yearContributionLastYear" :key="week">
                             <div v-for="day in week" :key="day.day" class="group" @mouseover="setHover(day.day)" >
