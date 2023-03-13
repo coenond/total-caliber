@@ -30,6 +30,13 @@ onMounted(() => onScreenResize());
 
 const hoverDay = ref('');
 const setHover = (day) =>  hoverDay.value = day;
+const colorVariants = {
+    0: 'bg-gray-200',
+    1: 'bg-[#ddbbdd]',
+    2: 'bg-[#ca97ca]',
+    3: 'bg-[#ad5cad]',
+    4: 'bg-[#ad5cad]',
+}
 </script>
 
 <template>
@@ -51,8 +58,8 @@ const setHover = (day) =>  hoverDay.value = day;
 
                     <div class="flex">
                         <div v-for="week in yearContributionLastYear" :key="week">
-                            <div v-for="day in week" :key="day.day" class="group">
-                                <div @mouseover="setHover(day.day)" :class="`w-4 h-4 ${day.grade === 0 ? 'bg-gray-200' : `bg-red-${day.grade}00`} rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all`"></div>
+                            <div v-for="day in week" :key="day.day" class="group" @mouseover="setHover(day.day)" >
+                                <div :class="colorVariants[day.grade]" class="w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
                                 <!-- <span :class="`group-hover:opacity-60 transition-opacity bg-gray-800 text-sm text-gray-100 rounded-md absolute opacity-0 p-1 z-10 mt-8`">
                                     <p>{{ day.day }}</p>
                                 </span> -->

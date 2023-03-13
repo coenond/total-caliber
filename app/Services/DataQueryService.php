@@ -199,13 +199,13 @@ class DataQueryService
             ->get();
     }
 
-    private function getActivityGrade(object $data): int
+    private function getActivityGrade(object $data): string
     {
         $activityMinutes = $data->totalTime / 60;
 
-        if ($activityMinutes < 40) return 2;
-        if ($activityMinutes < 90) return 4;
-        if ($activityMinutes < 180) return 6;
-        return 8;
+        if ($activityMinutes < 40) return 1;
+        if ($activityMinutes < 90) return 2;
+        if ($activityMinutes < 180) return 3;
+        return 4;
     }
 }
