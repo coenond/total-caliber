@@ -35,7 +35,7 @@ const colorVariants = {
     1: 'bg-[#ddbbdd]',
     2: 'bg-[#ca97ca]',
     3: 'bg-[#ad5cad]',
-    4: 'bg-[#ad5cad]',
+    4: 'bg-[#800080]',
 }
 </script>
 
@@ -74,7 +74,7 @@ const colorVariants = {
                             <p>&#60; 3 hours</p>
                         </div>
                         <div class="inline-flex mr-6">
-                            <div class="bg-[#ad5cad] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
+                            <div class="bg-[#800080] w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
                             <p>&#62; 3 hours</p>
                         </div>
                     </div>
