@@ -135,8 +135,6 @@ class DataQueryService
     public function getYearContribution(User $user): array
     {
         $lastYear = Carbon::now()->subWeeks(53)->startOfWeek()->toDateString();
-    
-        $today = Carbon::now();
 
         $data = DB::table('strava_activities')
             ->select(
