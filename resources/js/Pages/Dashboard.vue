@@ -57,7 +57,7 @@ const colorVariants = {
                        Your year contribution
                     </h2>
 
-                    <div v-if="streak > 3" class="flex flex-center">
+                    <div v-if="streak > 3" class="flex flex-center mb-4">
                         <div>
                             <img class="h-10" src="/images/fire.svg" />
                         </div>
