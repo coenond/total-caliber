@@ -149,7 +149,10 @@ class DataQueryService
             ->orderBy('onDay')
             ->get()
             ->keyBy('onDay');
-
+        
+        if ($data->empty()) {
+            return [];
+        }
 
         $computedDataLastYear = [];
         $weeksInLastYear = CarbonPeriod::create($lastYear, '1 week', Carbon::now());
