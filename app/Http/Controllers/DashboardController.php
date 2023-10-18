@@ -53,6 +53,7 @@ class DashboardController extends Controller
 
             'yearContributionByYear' => $yearContribution ? array_values($yearContribution['byYear']) : null,
             'yearContributionLastYear' => $yearContribution ? array_values($yearContribution['lastYear']) : null,
+            'streak' => $yearContribution ? $yearContribution['streak'] : null,
 
             'success_message' => session()->get('success_message')
         ]);

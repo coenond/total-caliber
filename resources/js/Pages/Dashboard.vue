@@ -17,6 +17,7 @@ const props = defineProps({
 
     yearContributionByYear: { type: Array, required: false },
     yearContributionLastYear: { type: Array, required: false },
+    streak: { type: Number, required: false },
 });
 
 const selectedYear = ref(2023);
@@ -55,6 +56,15 @@ const colorVariants = {
                     <h2 class="text-xl pb-10">
                        Your year contribution
                     </h2>
+
+                    <div v-if="streak > 3" class="flex flex-center mb-4">
+                        <div>
+                            <img class="h-10" src="/images/fire.svg" />
+                        </div>
+                        <p class="text-l font-bold pl-4 pt-2">You're on a <span
+      class="inline-block whitespace-nowrap rounded-[0.27rem] bg-purple-100 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline text-[0.75em] font-bold leading-none text-purple-700"
+      >{{ streak }}</span> days streak. Keep it going!</p>
+                    </div>
 
                     <div class="inline-flex mb-4">
                         <div class="inline-flex mr-6">

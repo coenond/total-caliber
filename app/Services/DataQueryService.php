@@ -134,9 +134,8 @@ class DataQueryService
 
     public function getYearContribution(User $user): array
     {
-        $lastYear = Carbon::now()->subWeeks(52)->startOfWeek()->toDateString();
-    
         $today = Carbon::now();
+        $lastYear = Carbon::now()->subWeeks(53)->startOfWeek()->toDateString();
 
         $data = DB::table('strava_activities')
             ->select(
@@ -189,7 +188,14 @@ class DataQueryService
             }
         }
 
-        return ['byYear' => $computedDataByYear, 'lastYear' => $computedDataLastYear];
+        $allActiveDays = array_reverse(iterator_to_array(CarbonPeriod::create($firstDay, '1 day', Carbon::now())));
+        $streak = 0;
+        foreach ($allActiveDays as $day) {
+            if (!$day->isToday() && !$data->has($day->toDateString())) break;
+            if ($data->has($day->toDateString())) $streak++;
+        }
+
+        return ['byYear' => $computedDataByYear, 'lastYear' => $computedDataLastYear, 'streak' => $streak];
     }
 
     public function getStravaDescriptionDate(User $user, Carbon $begin, string $sportTypeGroup): Collection
