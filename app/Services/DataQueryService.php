@@ -148,8 +148,8 @@ class DataQueryService
             ->orderBy('onDay')
             ->get()
             ->keyBy('onDay');
-        
-        if ($data->empty()) {
+      
+        if ($data->isEmpty()) {
             return [];
         }
 

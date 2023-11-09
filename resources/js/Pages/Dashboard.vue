@@ -90,6 +90,16 @@ const colorVariants = {
                     </div>
 
                     <div class="flex">
+                        <div>
+                            <div v-for="i in 7" :key="i" class="w-12 h-5" @mouseover="setHover(day.day)" >
+                                <p v-if="i === 1">Mon</p>
+                                <p v-if="i === 3">Wed</p>
+                                <p v-if="i === 3"></p>
+                                <p v-if="i === 5">Fri</p>
+                                <p v-if="i === 5"></p>
+                                <p v-if="i === 7">Sun</p>
+                            </div>
+                        </div>
                         <div v-for="week in yearContributionLastYear" :key="week">
                             <div v-for="day in week" :key="day.day" class="group" @mouseover="setHover(day.day)" >
                                 <div :class="colorVariants[day.grade]" class="w-4 h-4 rounded-sm mr-1 mt-1 border-white hover:rounded-lg transition-all"></div>
