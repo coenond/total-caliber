@@ -1,21 +1,14 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import StravaBtn from '@/Components/StravaBtn.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
-import YearByWeekChart from '@/Charts/YearByWeekChart.vue';
 import YearsProgressChart from '@/Charts/YearsProgressChart.vue';
 
 const props = defineProps({
-    weekDataChartDataInTime: { type: Array, required: false },
-    weekDataChartDataInDistance: { type: Array, required: false },
-    weekDataChartLabels: { type: Array, required: false },
-
     yearOverviewDataChartDataInTime: { type: Object, required: false },
     yearOverviewDataChartDataInDistance: { type: Object, required: false },
     yearOverviewDataChartLabels: { type: Array, required: false },
 
-    yearContributionByYear: { type: Array, required: false },
     yearContributionLastYear: { type: Array, required: false },
     streak: { type: Number, required: false },
 });
@@ -124,19 +117,6 @@ const colorVariants = {
                         :dataInTime="yearOverviewDataChartDataInTime"
                         :dataInDistance="yearOverviewDataChartDataInDistance"
                         :labels="yearOverviewDataChartLabels"
-                    />
-                </div>
-            </div>
-            <div v-if="weekDataChartDataInTime" class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-8">
-                <div class="overflow-hidden shadow-sm sm:rounded-lg p-6 bg-white border-b border-gray-200">
-                    <h2 class="text-xl pb-10">
-                       Your year overview per month
-                    </h2>
-
-                    <YearByWeekChart
-                        :dataInTime="weekDataChartDataInTime"
-                        :dataInDistance="weekDataChartDataInDistance"
-                        :labels="weekDataChartLabels"
                     />
                 </div>
             </div>

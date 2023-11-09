@@ -27,23 +27,14 @@ class DashboardController extends Controller
         $user = $req->user();
         $userHasStravaAuth = $this->stravaAuthService->userHasStravaAuth($user);
 
-        $this->dataQueryService->getYearContribution($user);
-
-        $weekDataChart = $userHasStravaAuth
-            ? $this->dataQueryService->getYearOverViewByWeek($user)
-            : null;
-        $yearDataChart = $userHasStravaAuth
-            ? $this->dataQueryService->getYearProgress($user)
-            : null;
-        $yearContribution = $userHasStravaAuth
-            ? $this->dataQueryService->getYearContribution($user)
-            : null;
+        $weekDataChart = $userHasStravaAuth ? $this->dataQueryService->getYearOverViewByWeek($user) : null;
+        $yearDataChart = $userHasStravaAuth ? $this->dataQueryService->getYearProgress($user) : null;
+        $yearContribution = $userHasStravaAuth ? $this->dataQueryService->getYearContribution($user) : null;
 
         return Inertia::render('Dashboard', [
             'stravaAuthUrl' => $this->stravaAuthService->getAuthorizationUrl(false),
             'userHasStravaAuth' => $userHasStravaAuth,
 
-            'weekDataChartDataInTime' => $weekDataChart ? array_values($weekDataChart['data_in_time']) : null,
             'weekDataChartDataInDistance' => $weekDataChart ? array_values($weekDataChart['data_in_distance']) : null,
             'weekDataChartLabels' => $weekDataChart ? array_values($weekDataChart['labels']) : null,
 
@@ -51,7 +42,6 @@ class DashboardController extends Controller
             'yearOverviewDataChartDataInDistance' => $yearDataChart ? $yearDataChart['data_in_distance'] : null,
             'yearOverviewDataChartLabels' => $yearDataChart ? array_values($yearDataChart['labels']) : null,
 
-            'yearContributionByYear' => $yearContribution ? array_values($yearContribution['byYear']) : null,
             'yearContributionLastYear' => $yearContribution ? array_values($yearContribution['lastYear']) : null,
             'streak' => $yearContribution ? $yearContribution['streak'] : null,
 
