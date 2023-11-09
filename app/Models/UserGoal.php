@@ -13,9 +13,9 @@ class UserGoal extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = [
-        'start',
-        'end',
+    protected $casts = [
+        'start' => 'date',
+        'end' => 'date',
     ];
 
     public function sportTypes(): BelongsToMany
