@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserGoalRequest;
 use App\Http\Requests\StoreUserStravaDescriptionRequest;
 use App\Models\UserGoal;
 use App\Models\UserStravaDescription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -16,7 +17,10 @@ class UserGoalController extends Controller
     public function index(Request $req)
     {
         $user = $req->user();
-        $userGoal = UserGoal::whereUserId($user->id)->with('sportTypes')->first();
+        $userGoal = UserGoal::whereUserId($user->id)
+            ->whereDate('end', '>', Carbon::now()->toDateString())
+            ->with('sportTypes')
+            ->first();
         $userStravaDescription = UserStravaDescription::whereUserId($user->id)->first();
 
         return Inertia::render('UserGoalOverview', [
