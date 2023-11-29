@@ -16,6 +16,7 @@
         <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
         <!-- Popper -->
         <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 
         <!-- Scripts -->
         @routes
@@ -33,5 +34,7 @@
     </script>
     <body class="font-sans antialiased">
         @inertia
+
+        <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
     </body>
 </html>
