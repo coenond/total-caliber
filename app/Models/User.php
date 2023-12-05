@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasOne(UserStravaDescription::class);
     }
 
+    public function stravaProfile(): HasOne
+    {
+        return $this->hasOne(StravaProfile::class);
+    }
+
     public function hasSyncJobOnCoolDown(): bool
     {
         $lastSyncJob = $this->stravaSyncJobs()->orderByDesc('created_at')->first();
