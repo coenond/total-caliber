@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { initFlowbite } from 'flowbite';
+import { Link } from '@inertiajs/inertia-vue3';
 
 // initialize components based on data attribute selectors
 onMounted(() => { initFlowbite(); })
@@ -44,15 +45,15 @@ onMounted(() => { initFlowbite(); })
             </svg>
             <span class="sr-only">Toggle sidebar</span>
           </button>
-          <a href="https://flowbite.com" class="flex items-center justify-between mr-4">
-            <img
-              src="https://flowbite.s3.amazonaws.com/logo.svg"
-              class="mr-3 h-8"
-              alt="Flowbite Logo"
-            />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-          </a>
-          <form action="#" method="GET" class="hidden md:block md:pl-2">
+          <div class="flex items-center justify-between mr-4">
+            <Link :href="route('dashboard')">
+              <a class="toggle no-underline hover:no-underline font-bold text-l tracking-wide" href="#">
+                  <img class="w-8 h-8 rounded-lg inline mb-1" src="/images/chart.svg" />
+                  TOTAL CALIBER
+              </a>
+            </Link>
+          </div>
+          <!-- <form action="#" method="GET" class="hidden md:block md:pl-2">
             <label for="topbar-search" class="sr-only">Search</label>
             <div class="relative md:w-64 md:w-96">
               <div
@@ -79,7 +80,7 @@ onMounted(() => { initFlowbite(); })
                 placeholder="Search"
               />
             </div>
-          </form>
+          </form> -->
         </div>
         <div class="flex items-center lg:order-2">
           <button
@@ -94,13 +95,12 @@ onMounted(() => { initFlowbite(); })
             </svg>
           </button>
           <!-- Notifications -->
-          <button
+          <!-- <button
             type="button"
             data-dropdown-toggle="notification-dropdown"
             class="p-2 mr-1 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
           >
             <span class="sr-only">View notifications</span>
-            <!-- Bell icon -->
             <svg
               aria-hidden="true"
               class="w-6 h-6"
@@ -112,7 +112,7 @@ onMounted(() => { initFlowbite(); })
                 d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
               ></path>
             </svg>
-          </button>
+          </button> -->
           <!-- Dropdown menu -->
           <div
             class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700 rounded-xl"
@@ -379,25 +379,6 @@ onMounted(() => { initFlowbite(); })
               </div>
             </a>
           </div>
-          <!-- Apps -->
-          <button
-            type="button"
-            data-dropdown-toggle="apps-dropdown"
-            class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-          >
-            <span class="sr-only">View notifications</span>
-            <!-- Icon -->
-            <svg
-              class="w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-              ></path>
-            </svg>
-          </button>
           <!-- Dropdown menu -->
           <div
             class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
