@@ -61,6 +61,9 @@ watch(() => usePage().props.value.notification.message, () => {
                                 <a v-if="$page.props.auth.user.is_admin" href="/horizon" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     Horizon
                                 </a>
+                                <a v-if="$page.props.auth.user.is_admin" href="/pulse" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-white hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Pulse
+                                </a>
                             </div>
                         </div>
 
