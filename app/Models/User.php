@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasOne(UserGoal::class);
     }
 
+    public function stravaProfile(): HasOne
+    {
+        return $this->hasOne(StravaProfile::class);
+    }
+
     public function stravaDescription(): HasOne
     {
         return $this->hasOne(UserStravaDescription::class);

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Services\StravaClient;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pulse\Facades\Pulse;
 use Spatie\Health\Facades\Health;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
@@ -34,6 +36,16 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(StravaClient::class, function ($app) {
             return new StravaClient();
+        });
+
+        
+        Pulse::users(function ($ids) {
+            return User::findMany($ids)->map(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'extra' => $user->email,
+                'avatar' => $user->stravaProfile->pic_medium,
+            ]);
         });
     }
 }
