@@ -186,7 +186,7 @@ return [
                 // '#^http://127\.0\.0\.1:13714#', // Inertia SSR...
             ],
             'groups' => [
-                // '#^https://api\.github\.com/repos/.*$#' => 'api.github.com/repos/*',
+                '#^https://www\.strava\.com/api/v3/athlete/activities*$#' => 'strava.com/api/v3/athlete/activities/*',
                 // '#^https?://([^/]*).*$#' => '\1',
                 // '#/\d+#' => '/*',
             ],
