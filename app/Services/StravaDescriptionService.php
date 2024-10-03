@@ -83,7 +83,7 @@ class StravaDescriptionService
 
     private function createSimpleDataLine(string $baseDescription = null, int $count, string $type, float $distanceInMeters, int $timeInSeconds, UserGoal $goal): string
     {
-        $distance = round($distanceInMeters / self::METERS_IN_KM, 1);
+        $distance = (int) round($distanceInMeters / self::METERS_IN_KM, 0);
         $hours = (int)($timeInSeconds / self::SECONDS_IN_HOUR);
         $minutes = (int)(($timeInSeconds % self::SECONDS_IN_HOUR) / self::SECONDS_IN_MINUTE);
         $time = "{$hours}h {$minutes}min";
@@ -151,6 +151,6 @@ Training from '.$start.' towards '.$userGoal->name.' on '. $end . $this->tagLine
     private function tagLine(): string
     {
         return '
->> by https://totalcaliber.com/';
+>> by TotalCaliber';
     }
 }
